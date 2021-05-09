@@ -1,8 +1,11 @@
 import React from 'react';
-import { Container, Typography, CssBaseline } from '@material-ui/core';
+// eslint-disable-next-line object-curly-newline
+import { Container, Typography, CssBaseline, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import headerMedium from './images/header-bg-medium.jpg';
 // import headerSmall from "./images/header-bg-small.jpg";
+import SearchBar from './components/SearchBar';
+import FoodCard from './components/FoodCard';
 
 const useStyles = makeStyles((theme) => ({
   headerContainer: {
@@ -22,7 +25,12 @@ const App = () => {
           Recipify
         </Typography>
       </Container>
-      <div>SEARCH</div>
+      <SearchBar />
+      <Grid container>
+        <FoodCard />
+        <FoodCard />
+        <FoodCard />
+      </Grid>
     </>
   );
 };

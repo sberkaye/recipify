@@ -25,14 +25,18 @@ const useInputStyles = makeStyles({
   },
 });
 
-const useRootStyles = makeStyles({
+const useRootStyles = makeStyles((theme) => ({
   root: {
-    width: '80%',
-    marginLeft: '10%',
     zIndex: 99,
-    transform: 'translateY(-50%)',
+    left: '50%',
+    width: '80%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    transform: 'translate(-50%,-50%)',
+    position: 'absolute',
   },
-});
+}));
 
 const SearchBar = () => {
   const classes = useInputStyles();

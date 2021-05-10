@@ -7,14 +7,12 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import CardActions from '@material-ui/core/CardActions';
 import Collapse from '@material-ui/core/Collapse';
-import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Tag from './Tag';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,9 +32,6 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  avatar: {
-    backgroundColor: red[500],
-  },
 }));
 
 const FoodCard = () => {
@@ -49,33 +44,15 @@ const FoodCard = () => {
 
   return (
     <Card className={classes.root}>
-      <CardHeader
-        avatar={
-          // eslint-disable-next-line react/jsx-wrap-multilines
-          <Avatar aria-label="recipe" className={classes.avatar}>
-            R
-          </Avatar>
-        }
-        action={
-          // eslint-disable-next-line react/jsx-wrap-multilines
-          <IconButton aria-label="settings">
-            <MoreVertIcon />
-          </IconButton>
-        }
-        title="Shrimp and Chorizo Paella"
-        subheader="September 14, 2016"
-      />
+      <CardHeader title="Tuna Nicoise" />
       <CardMedia
         className={classes.media}
-        image="/static/images/cards/paella.jpg"
+        image="https://www.themealdb.com/images/media/meals/yypwwq1511304979.jpg"
         title="Paella dish"
       />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook
-          together with your guests. Add 1 cup of frozen peas along with the
-          mussels, if you like.
-        </Typography>
+        <Tag type="category">Seafood</Tag>
+        <Tag type="region">French</Tag>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">

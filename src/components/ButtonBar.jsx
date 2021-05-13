@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// eslint-disable-next-line object-curly-newline
 import {
   AppBar,
   makeStyles,
@@ -12,6 +11,12 @@ import {
   Divider,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import clsx from 'clsx';
+import loginActions from '../redux/actions/actionLogin';
+
+const { userLogin, userLogout } = loginActions;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,6 +34,12 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: `2px solid ${theme.palette.primary.main}`,
     },
   },
+  loginButtons: (props) => ({
+    display: props.loggedIn ? 'none' : 'flex',
+  }),
+  profileButtons: (props) => ({
+    display: props.loggedIn ? 'flex' : 'none',
+  }),
   box: {
     flexGrow: 1,
   },
@@ -64,10 +75,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ButtonBar = () => {
+const ButtonBar = (props) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const isMenuOpen = Boolean(anchorElement);
-  const classes = useStyles();
+  const classes = useStyles(props);
+
+  const handleLogin = () => {
+    props.userLogin();
+  };
+
+  const handleLogout = () => {
+    props.userLogout();
+  };
 
   const handleProfileMenuClose = () => {
     setAnchorElement(null);
@@ -98,8 +117,21 @@ const ButtonBar = () => {
         <Toolbar>
           <Box className={classes.box} />
           <div className={classes.sectionDesktop}>
-            <Button className={classes.button}>LOGIN</Button>
-            <Button className={classes.button}>SIGNUP</Button>
+            <Button
+              onClick={handleLogin}
+              className={clsx(classes.button, classes.loginButtons)}
+            >
+              LOGIN
+            </Button>
+            <Button className={clsx(classes.button, classes.loginButtons)}>
+              SIGNUP
+            </Button>
+            <Button
+              onClick={handleLogout}
+              className={clsx(classes.button, classes.profileButtons)}
+            >
+              LOGOUT
+            </Button>
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -116,4 +148,13 @@ const ButtonBar = () => {
   );
 };
 
-export default ButtonBar;
+ButtonBar.propTypes = {
+  userLogin: PropTypes.func.isRequired,
+  userLogout: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  loggedIn: state.auth.loggedIn,
+});
+
+export default connect(mapStateToProps, { userLogin, userLogout })(ButtonBar);

@@ -32,6 +32,7 @@ const useRootStyles = makeStyles((theme) => ({
     width: '80%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
+      border: '2px dashed green',
     },
     transform: 'translate(-50%,-50%)',
     position: 'absolute',

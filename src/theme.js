@@ -21,6 +21,11 @@ const theme = responsiveFontSizes(
         letterSpacing: '1.8rem',
         lineHeight: 1.5,
       },
+      body1: {
+        fontFamily: 'Montserrat, sans-serif',
+        lineHeight: 2,
+        fontSize: '1rem',
+      },
     },
   }),
 );

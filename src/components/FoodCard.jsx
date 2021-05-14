@@ -10,6 +10,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { Box, Typography } from '@material-ui/core';
 import Tag from './Tag';
 
@@ -47,9 +48,11 @@ const FoodCard = (props) => {
         <Tag type="region">French</Tag>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="show recipe" color="primary">
-          <VisibilityIcon />
-        </IconButton>
+        <Link to="/recipe/1">
+          <IconButton aria-label="show recipe" color="primary">
+            <VisibilityIcon />
+          </IconButton>
+        </Link>
         <Box className={classes.actionButtons}>
           <IconButton aria-label="add to favorites" color="primary">
             <FavoriteIcon />

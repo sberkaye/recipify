@@ -13,36 +13,28 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `linear-gradient(rgba(255, 136, 0, 0.7), rgba(255, 136, 0, 0.7)), url(${mainBgMedium})`,
     padding: theme.spacing(7),
     maxWidth: '100%',
+    minHeight: '100%',
     margin: 0,
-    flexGrow: 1,
   },
 }));
 
 const Home = () => {
   const classes = useStyles();
   return (
-    <>
-      <Grid
-        container
-        item
-        className={classes.mainGrid}
-        spacing={4}
-        align="center"
-      >
-        <Grid item xs={12} sm={6} md={4}>
-          <FoodCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <FoodCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <FoodCard />
-        </Grid>
-        <Grid item xs={12} sm={6} md={4}>
-          <FoodCard />
-        </Grid>
+    <Grid container className={classes.mainGrid} spacing={4} align="center">
+      <Grid item xs={12} sm={6} md={4}>
+        <FoodCard />
       </Grid>
-    </>
+      <Grid item xs={12} sm={6} md={4}>
+        <FoodCard />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4}>
+        <FoodCard />
+      </Grid>
+      <Grid item xs={12} sm={6} md={4}>
+        <FoodCard />
+      </Grid>
+    </Grid>
   );
 };
 

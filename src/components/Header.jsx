@@ -11,7 +11,6 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${headerMedium})`,
     backgroundPosition: 'top',
     height: 250,
-    flexGrow: 10,
     maxWidth: '100%',
     padding: theme.spacing(4),
     // increase padding in smaller screens to have space between buttons and title
@@ -25,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   return (
-    <Grid item container direction="column" spacing={0}>
+    <Grid container direction="column" spacing={0}>
       <ButtonBar />
       <Grid item>
         <Container className={classes.headerContainer}>
@@ -35,7 +34,6 @@ const Header = () => {
         </Container>
       </Grid>
       <Grid item>
-        {/* take the full width for extra small screens */}
         <SearchBar />
       </Grid>
     </Grid>

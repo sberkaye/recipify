@@ -1,5 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Grid, Typography, makeStyles } from '@material-ui/core';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import recipeActions from '../redux/actions/actionRecipe';
+
+const { fetchRecipeById } = recipeActions;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -12,8 +17,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Recipe = () => {
+const Recipe = (props) => {
   const classes = useStyles();
+  // eslint-disable-next-line no-shadow
+  const { recipe, fetchRecipeById } = props;
+
+  useEffect(() => {
+    fetchRecipeById(52794);
+    console.log('recipe: ', recipe);
+  }, []);
 
   return (
     <>
@@ -46,4 +58,13 @@ const Recipe = () => {
   );
 };
 
-export default Recipe;
+Recipe.propTypes = {
+  recipe: PropTypes.shape().isRequired,
+  fetchRecipeById: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  recipe: state.recipe,
+});
+
+export default connect(mapStateToProps, { fetchRecipeById })(Recipe);

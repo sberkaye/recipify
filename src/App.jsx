@@ -13,9 +13,9 @@ const App = () => (
     <Header />
     <BrowserRouter>
       <Switch>
-        <Route path="/recipe/:id" exact component={Recipe} />
-        <Route path="/search/:searchTerm" exact component={SearchList} />
         <Route path="/" exact component={Home} />
+        <Route path="/search/:searchTerm" exact component={SearchList} />
+        <Route path="/recipe/:id" exact component={Recipe} />
       </Switch>
     </BrowserRouter>
     <Footer />

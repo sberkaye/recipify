@@ -4,23 +4,27 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  root: (props) => ({
     color: '#fff',
     borderRadius: '3rem',
-    width: '10rem',
+    display: 'inline-block',
+    width: props.sm ? '8rem' : '10rem',
     textAlign: 'center',
     margin: '0.7rem',
-  },
+  }),
   category: {
     backgroundColor: theme.palette.tertiary.main,
   },
-  region: {
+  area: {
     backgroundColor: theme.palette.secondary.main,
+  },
+  tag: {
+    backgroundColor: theme.palette.primary.main,
   },
 }));
 
 const Tag = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   const { children, type } = props;
   return (
     <Typography className={clsx(classes.root, classes[type])}>

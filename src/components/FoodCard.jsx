@@ -44,11 +44,15 @@ const FoodCard = (props) => {
         title="Paella dish"
       />
       <CardContent>
-        <Tag type="category">Seafood</Tag>
-        <Tag type="region">French</Tag>
+        <Tag sm type="category">
+          Seafood
+        </Tag>
+        <Tag sm type="area">
+          French
+        </Tag>
       </CardContent>
       <CardActions disableSpacing>
-        <Link to="/recipe/1">
+        <Link to="/recipe/52773">
           <IconButton aria-label="show recipe" color="primary">
             <VisibilityIcon />
           </IconButton>

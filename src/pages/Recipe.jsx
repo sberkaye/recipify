@@ -1,58 +1,105 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable object-curly-newline */
 import React, { useEffect } from 'react';
 import { Grid, Typography, makeStyles } from '@material-ui/core';
+import Image from 'material-ui-image';
 import { connect } from 'react-redux';
+import DOMPurify from 'dompurify';
 import PropTypes from 'prop-types';
+import Tag from '../components/Tag';
 import recipeActions from '../redux/actions/actionRecipe';
 
 const { fetchRecipeById } = recipeActions;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
     color: '#333',
-    padding: theme.spacing(10),
     height: '100%',
   },
   recipe: {
     height: '100%',
+    lineHeight: 1.7,
+    color: '#444',
+    whiteSpace: 'pre-wrap',
+    fontSize: '1.1rem',
+    display: 'block',
+    textAlign: 'left',
+  },
+  title: {
+    color: '#333',
+    textAlign: 'center',
+    marginRight: '4rem',
+    textTransform: 'uppercase',
   },
 }));
 
 const Recipe = (props) => {
   const classes = useStyles();
   // eslint-disable-next-line no-shadow
-  const { recipe, fetchRecipeById } = props;
+  const { recipe, fetchRecipeById, match } = props;
+  const { id } = match.params;
+  const { name, category, area, imgLink, instructions, tags } = recipe;
 
   useEffect(() => {
-    fetchRecipeById(52794);
-    console.log('recipe: ', recipe);
+    fetchRecipeById(id);
   }, []);
+
+  const renderTags = () => (
+    <>
+      <Tag sm type="category">
+        {category}
+      </Tag>
+      <Tag sm type="area">
+        {area}
+      </Tag>
+      {tags.map((tag) => (
+        <Tag sm type="tag">
+          {tag}
+        </Tag>
+      ))}
+    </>
+  );
+
+  // const renderIngredients = () => (
+  //   <>
+  //   </>
+  // );
 
   return (
     <>
-      <Grid container item className={classes.root}>
-        <Grid item sm={2} xs={0} />
-        <Grid item sm={8} xs={12} spacing={4}>
-          <Typography variant="body1" className={classes.recipe}>
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magnam rem
-            corrupti qui neque optio nobis cumque ratione maiores sapiente
-            assumenda officia incidunt, animi eos cum asperiores expedita iste
-            velit, quis soluta laboriosam inventore hic exercitationem nulla
-            facere? Fugit illo a ipsa qui ab, nihil, perspiciatis, animi aperiam
-            incidunt voluptates soluta! Lorem ipsum dolor sit amet consectetur
-            adipisicing elit. Maiores molestiae atque quibusdam facere quaerat,
-            aut pariatur maxime, blanditiis ex voluptas ipsum, voluptate ratione
-            voluptatum esse quam eveniet nesciunt repudiandae ut. Minima libero
-            modi quam recusandae, deserunt neque nostrum officiis in vitae
-            quisquam porro? Nostrum accusamus sapiente in, maxime modi, debitis,
-            sint a officia corporis libero nihil delectus. Molestias aspernatur,
-            incidunt voluptas sapiente quos adipisci iusto culpa atque libero
-            exercitationem perspiciatis mollitia nemo corrupti eos unde possimus
-            deleniti ex, placeat excepturi reprehenderit. Laborum repellendus
-            eligendi voluptates voluptatibus, dolor, architecto odit est vero
-            debitis enim consectetur! Deleniti ex ad nam rem mollitia.
+      <Grid
+        container
+        alignItems="space-around"
+        align="center"
+        justify="space-around"
+        item
+        className={classes.root}
+        spacing={0}
+      >
+        <Grid xs={12} />
+        <Grid xs={12}>
+          <Typography variant="h3" className={classes.title}>
+            {name}
           </Typography>
         </Grid>
-        <Grid item sm={2} xs={0} />
+        <Grid xs={12}>{renderTags()}</Grid>
+        {/* ----------------------------------------------------------------------- */}
+        <Grid sm={1} />
+        <Grid item sm={3} xs={0}>
+          <Image aspectRatio={16 / 9} src={imgLink} />
+        </Grid>
+        <Grid xs={8}>{renderTags()}</Grid>
+        {/* ----------------------------------------------------------------------- */}
+        <Grid item sm={1} xs={0} />
+        <Grid item sm={8} xs={12}>
+          <span
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(instructions),
+            }}
+            className={classes.recipe}
+          />
+        </Grid>
+        <Grid item sm={3} xs={0} />
       </Grid>
     </>
   );

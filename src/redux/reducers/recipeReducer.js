@@ -4,36 +4,25 @@ const INITIAL_STATE = {
   id: '',
   name: '',
   category: '',
+  area: '',
   instructions: '',
   imgLink: '',
+  tags: [],
   videoLink: '',
   ingredients: [],
   measures: [],
 };
 
 export default (state = INITIAL_STATE, action) => {
-  const {
-    id,
-    name,
-    category,
-    instructions,
-    imgLink,
-    videoLink,
-    ingredients,
-    measures,
-  } = action.payload;
+  let recipeObj = { ...state };
+  if (action.type === FETCH_RECIPE) {
+    recipeObj = action.payload;
+  }
   switch (action.type) {
     case FETCH_RECIPE:
       return {
         ...state,
-        id,
-        name,
-        category,
-        instructions,
-        imgLink,
-        videoLink,
-        ingredients,
-        measures,
+        ...recipeObj,
       };
     default:
       return state;

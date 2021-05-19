@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   tag: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: theme.palette.red.main,
   },
 }));
 

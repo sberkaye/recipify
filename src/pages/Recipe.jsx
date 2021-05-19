@@ -15,7 +15,6 @@ const { fetchRecipeById } = recipeActions;
 const useStyles = makeStyles((theme) => ({
   root: {
     color: '#333',
-    height: '100%',
     paddingTop: theme.spacing(6),
     maxWidth: '100%',
     marginBottom: '5%',
@@ -83,6 +82,7 @@ const Recipe = (props) => {
         className={classes.root}
         spacing={3}
       >
+        {/* ----------------------------------------------------------------------- */}
         <Grid item xs={12}>
           <Typography variant="h3" className={classes.title}>
             {name}
@@ -93,13 +93,13 @@ const Recipe = (props) => {
           {renderTags()}
         </Grid>
         {/* ----------------------------------------------------------------------- */}
-        <Grid item sm={1} xs={1} />
-        <Grid item sm={3} xs={10}>
+        <Grid item xs={1} sm={1} />
+        <Grid item xs={10} sm={3}>
           <Image src={imgLink} />
         </Grid>
-        <Grid item sm={1} xs={1} />
-        {/* ----------------------------------------------------------------------- */}
-        <Grid item sm={5} xs={10}>
+        <Grid item xs={1} />
+        <Grid item xs={1} />
+        <Grid item xs={10} sm={4}>
           <IngredientsTable
             rows={ingredients.map((ingredient, index) => ({
               ingredient,
@@ -107,10 +107,10 @@ const Recipe = (props) => {
             }))}
           />
         </Grid>
-        <Grid item sm={2} xs={1} />
+        <Grid item xs={1} sm={2} />
         {/* ----------------------------------------------------------------------- */}
-        <Grid item sm={1} xs={1} />
-        <Grid item sm={8} xs={10}>
+        <Grid item xs={1} sm={1} />
+        <Grid item xs={10} sm={9}>
           <span
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(instructions),
@@ -118,7 +118,7 @@ const Recipe = (props) => {
             className={classes.recipe}
           />
         </Grid>
-        <Grid item sm={3} xs={1} />
+        <Grid item xs={1} sm={2} />
         {/* ----------------------------------------------------------------------- */}
       </Grid>
     </>

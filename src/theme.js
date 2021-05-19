@@ -12,6 +12,9 @@ const theme = responsiveFontSizes(
       tertiary: {
         main: '#2AE619',
       },
+      red: {
+        main: '#FF3838',
+      },
     },
     typography: {
       fontFamily: 'Montserrat, sans-serif',

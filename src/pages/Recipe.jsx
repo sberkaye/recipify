@@ -7,14 +7,19 @@ import { connect } from 'react-redux';
 import DOMPurify from 'dompurify';
 import PropTypes from 'prop-types';
 import Tag from '../components/Tag';
+import IngredientsTable from '../components/IngredientsTable';
 import recipeActions from '../redux/actions/actionRecipe';
 
 const { fetchRecipeById } = recipeActions;
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     color: '#333',
     height: '100%',
+    paddingTop: theme.spacing(6),
+    maxWidth: '100%',
+    marginBottom: '5%',
+    flexGrow: 1,
   },
   recipe: {
     height: '100%',
@@ -28,7 +33,6 @@ const useStyles = makeStyles(() => ({
   title: {
     color: '#333',
     textAlign: 'center',
-    marginRight: '4rem',
     textTransform: 'uppercase',
   },
 }));
@@ -38,7 +42,16 @@ const Recipe = (props) => {
   // eslint-disable-next-line no-shadow
   const { recipe, fetchRecipeById, match } = props;
   const { id } = match.params;
-  const { name, category, area, imgLink, instructions, tags } = recipe;
+  const {
+    name,
+    category,
+    area,
+    imgLink,
+    instructions,
+    tags,
+    ingredients,
+    measures,
+  } = recipe;
 
   useEffect(() => {
     fetchRecipeById(id);
@@ -53,45 +66,51 @@ const Recipe = (props) => {
         {area}
       </Tag>
       {tags.map((tag) => (
-        <Tag sm type="tag">
+        <Tag key={`${id}+${tag}`} sm type="tag">
           {tag}
         </Tag>
       ))}
     </>
   );
 
-  // const renderIngredients = () => (
-  //   <>
-  //   </>
-  // );
-
   return (
     <>
       <Grid
         container
-        alignItems="space-around"
         align="center"
         justify="space-around"
         item
         className={classes.root}
-        spacing={0}
+        spacing={3}
       >
-        <Grid xs={12} />
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Typography variant="h3" className={classes.title}>
             {name}
           </Typography>
         </Grid>
-        <Grid xs={12}>{renderTags()}</Grid>
         {/* ----------------------------------------------------------------------- */}
-        <Grid sm={1} />
-        <Grid item sm={3} xs={0}>
-          <Image aspectRatio={16 / 9} src={imgLink} />
+        <Grid item xs={12}>
+          {renderTags()}
         </Grid>
-        <Grid xs={8}>{renderTags()}</Grid>
         {/* ----------------------------------------------------------------------- */}
-        <Grid item sm={1} xs={0} />
-        <Grid item sm={8} xs={12}>
+        <Grid item sm={1} xs={1} />
+        <Grid item sm={3} xs={10}>
+          <Image src={imgLink} />
+        </Grid>
+        <Grid item sm={1} xs={1} />
+        {/* ----------------------------------------------------------------------- */}
+        <Grid item sm={5} xs={10}>
+          <IngredientsTable
+            rows={ingredients.map((ingredient, index) => ({
+              ingredient,
+              measure: measures[index],
+            }))}
+          />
+        </Grid>
+        <Grid item sm={2} xs={1} />
+        {/* ----------------------------------------------------------------------- */}
+        <Grid item sm={1} xs={1} />
+        <Grid item sm={8} xs={10}>
           <span
             dangerouslySetInnerHTML={{
               __html: DOMPurify.sanitize(instructions),
@@ -99,7 +118,8 @@ const Recipe = (props) => {
             className={classes.recipe}
           />
         </Grid>
-        <Grid item sm={3} xs={0} />
+        <Grid item sm={3} xs={1} />
+        {/* ----------------------------------------------------------------------- */}
       </Grid>
     </>
   );

@@ -9,11 +9,13 @@ import mainBgMedium from '../images/main-bg-medium.jpg';
 import FoodCard from '../components/FoodCard';
 
 const useStyles = makeStyles((theme) => ({
-  mainGrid: {
+  root: {
     backgroundImage: `linear-gradient(rgba(255, 136, 0, 0.7), rgba(255, 136, 0, 0.7)), url(${mainBgMedium})`,
+    backgroundSize: 'cover',
     padding: theme.spacing(7),
     maxWidth: '100%',
     minHeight: '100%',
+    flexGrow: 1,
     margin: 0,
   },
 }));
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
 const Home = () => {
   const classes = useStyles();
   return (
-    <Grid container className={classes.mainGrid} spacing={4} align="center">
+    <Grid container item className={classes.root} spacing={4} align="center">
       <Grid item xs={12} sm={6} md={4}>
         <FoodCard />
       </Grid>

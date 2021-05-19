@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
 const Header = () => {
   const classes = useStyles();
   return (
-    <Grid container direction="column" spacing={0}>
+    <Grid item container direction="column" spacing={0}>
       <ButtonBar />
       <Grid item>
         <Container className={classes.headerContainer}>

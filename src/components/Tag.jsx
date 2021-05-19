@@ -35,7 +35,7 @@ const Tag = (props) => {
 
 Tag.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
-  children: PropTypes.object.isRequired,
+  children: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
 };
 

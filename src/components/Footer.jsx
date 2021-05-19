@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#ddd',
     padding: theme.spacing(2),
     height: '3.6rem',
+    bottom: 0,
     width: '100%',
   },
 }));

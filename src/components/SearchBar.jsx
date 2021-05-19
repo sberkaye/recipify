@@ -45,7 +45,6 @@ const SearchBar = () => {
     <TextField
       className={rootClasses.root}
       variant="outlined"
-      color="none"
       placeholder="Search for a recipe"
       InputProps={{
         startAdornment: (

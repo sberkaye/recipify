@@ -11,8 +11,8 @@ const App = () => (
   <>
     <CssBaseline />
     <Grid container direction="column" spacing={0}>
-      <Header />
       <BrowserRouter>
+        <Header />
         <Switch>
           <Route path="/" exact component={Home} />
           <Route path="/search/:searchTerm" exact component={SearchList} />

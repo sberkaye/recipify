@@ -1,6 +1,8 @@
+import _ from 'underscore';
 import { FETCH_RECIPE, FETCH_RANDOM } from '../actions/types';
 
-const INITIAL_STATE = [
+/*
+  How a recipe object should look like:
   {
     id: '',
     name: '',
@@ -13,16 +15,20 @@ const INITIAL_STATE = [
     ingredients: [],
     measures: [],
   },
-];
+ */
+
+const INITIAL_STATE = [];
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_RECIPE:
-      return [action.payload];
+      // if the recipe is not present in the store, add it
+      if (!_.find(state, (recipe) => recipe.id === action.payload.id)) {
+        return [...state, action.payload];
+      }
+      return state;
     case FETCH_RANDOM:
-      console.log('action.payload: ', action.payload);
-      console.log('sa: ', [...action.payload]);
-      return [...action.payload];
+      return [...state, ...action.payload];
     default:
       return state;
   }

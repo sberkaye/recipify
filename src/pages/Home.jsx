@@ -71,10 +71,11 @@ const Home = (props) => {
     handleCardCount();
   }, []);
 
-  // whenever the card count is updated, get that number of random recipes
+  // whenever the card count is updated with a positive number and there are not enough cards,
+  // get required number of random recipes to complement
   useEffect(() => {
-    if (cardCount > 0) {
-      getRandomRecipe(cardCount);
+    if (cardCount > 0 && recipes.length < cardCount) {
+      getRandomRecipe(cardCount - recipes.length);
     }
   }, [cardCount]);
 

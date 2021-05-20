@@ -1,3 +1,5 @@
+// recipe HTMLs are sanitized with DOMPurify before being used, so disabling react/no-danger
+/* eslint-disable react/no-danger */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/prop-types */
 /* eslint-disable object-curly-newline */
@@ -52,7 +54,7 @@ const Recipe = (props) => {
     tags,
     ingredients,
     measures,
-  } = recipes[0];
+  } = recipes.find((rec) => rec.id === id);
 
   useEffect(() => {
     fetchRecipeById(id);

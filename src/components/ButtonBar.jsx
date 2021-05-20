@@ -11,6 +11,8 @@ import {
   Divider,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
@@ -60,6 +62,9 @@ const useStyles = makeStyles((theme) => ({
   },
   accountButton: {
     transform: 'scale(1.9)',
+  },
+  homeButton: {
+    transform: 'scale(1.7)',
   },
   profileMenu: {
     marginTop: theme.spacing(4),
@@ -115,6 +120,11 @@ const ButtonBar = (props) => {
     <>
       <AppBar position="static" className={classes.root}>
         <Toolbar>
+          <Link to="/">
+            <IconButton>
+              <HomeRoundedIcon className={classes.homeButton} color="primary" />
+            </IconButton>
+          </Link>
           <Box className={classes.box} />
           <div className={classes.sectionDesktop}>
             <Button

@@ -57,11 +57,15 @@ const FoodCard = (props) => {
   // if the name is too long, omit the remainder after the corresponding
   // breakpoint in titleBreaks
   useEffect(() => {
-    setModifiedName(
-      name.length < titleBreaks[size]
-        ? name
-        : `${name.slice(0, titleBreaks[size] - 3)}...`,
-    );
+    if (size !== 'xs') {
+      setModifiedName(
+        name.length < titleBreaks[size]
+          ? name
+          : `${name.slice(0, titleBreaks[size] - 3)}...`,
+      );
+    } else {
+      setModifiedName(name);
+    }
   }, [size]);
 
   return (

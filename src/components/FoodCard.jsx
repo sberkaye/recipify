@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -12,11 +12,18 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Box, Typography } from '@material-ui/core';
+import PropTypes from 'prop-types';
 import Tag from './Tag';
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
+  },
+  header: {
+    whiteSpace: 'nowrap',
+    [theme.breakpoints.down('sm')]: {
+      whiteSpace: 'normal',
+    },
   },
   media: {
     height: 0,
@@ -30,29 +37,47 @@ const useStyles = makeStyles({
     display: props.loggedIn ? 'flex' : 'none',
     marginLeft: 'auto',
   }),
-});
+}));
+
+const titleBreaks = {
+  sm: 16,
+  md: 19,
+  lg: 21,
+};
 
 const FoodCard = (props) => {
+  const [modifiedName, setModifiedName] = useState('');
+
   const classes = useStyles(props);
+
+  const { cardDetails, size } = props;
+  // eslint-disable-next-line object-curly-newline
+  const { name, imgLink, category, area, id } = cardDetails;
+
+  // if the name is too long, omit the remainder after the corresponding
+  // breakpoint in titleBreaks
+  useEffect(() => {
+    setModifiedName(
+      name.length < titleBreaks[size]
+        ? name
+        : `${name.slice(0, titleBreaks[size] - 3)}...`,
+    );
+  }, [size]);
 
   return (
     <Card className={classes.root} elevation={2}>
-      <CardHeader title="Tuna Nicoise" />
-      <CardMedia
-        className={classes.media}
-        image="https://www.themealdb.com/images/media/meals/yypwwq1511304979.jpg"
-        title="Paella dish"
-      />
+      <CardHeader className={classes.header} title={modifiedName} />
+      <CardMedia className={classes.media} image={imgLink} title={name} />
       <CardContent>
         <Tag sm type="category">
-          Seafood
+          {category}
         </Tag>
         <Tag sm type="area">
-          French
+          {area}
         </Tag>
       </CardContent>
       <CardActions disableSpacing>
-        <Link to="/recipe/52773">
+        <Link to={`/recipe/${id}`}>
           <IconButton aria-label="show recipe" color="primary">
             <VisibilityIcon />
           </IconButton>
@@ -71,6 +96,11 @@ const FoodCard = (props) => {
       </CardActions>
     </Card>
   );
+};
+
+FoodCard.propTypes = {
+  cardDetails: PropTypes.shape().isRequired,
+  size: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({

@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable react/prop-types */
 /* eslint-disable object-curly-newline */
 import React, { useEffect } from 'react';
@@ -39,7 +40,8 @@ const useStyles = makeStyles((theme) => ({
 const Recipe = (props) => {
   const classes = useStyles();
   // eslint-disable-next-line no-shadow
-  const { recipe, fetchRecipeById, match } = props;
+  const { recipes, fetchRecipeById, match } = props;
+
   const { id } = match.params;
   const {
     name,
@@ -50,7 +52,7 @@ const Recipe = (props) => {
     tags,
     ingredients,
     measures,
-  } = recipe;
+  } = recipes[0];
 
   useEffect(() => {
     fetchRecipeById(id);
@@ -64,11 +66,12 @@ const Recipe = (props) => {
       <Tag sm type="area">
         {area}
       </Tag>
-      {tags.map((tag) => (
-        <Tag key={`${id}+${tag}`} sm type="tag">
-          {tag}
-        </Tag>
-      ))}
+      {tags &&
+        tags.map((tag) => (
+          <Tag key={`${id}+${tag}`} sm type="tag">
+            {tag}
+          </Tag>
+        ))}
     </>
   );
 
@@ -126,12 +129,12 @@ const Recipe = (props) => {
 };
 
 Recipe.propTypes = {
-  recipe: PropTypes.shape().isRequired,
+  recipes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
   fetchRecipeById: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  recipe: state.recipe,
+  recipes: state.recipes,
 });
 
 export default connect(mapStateToProps, { fetchRecipeById })(Recipe);

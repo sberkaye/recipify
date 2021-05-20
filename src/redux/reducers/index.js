@@ -5,5 +5,5 @@ import recipeReducer from './recipeReducer';
 
 export default combineReducers({
   auth: authReducer,
-  recipe: recipeReducer,
+  recipes: recipeReducer,
 });

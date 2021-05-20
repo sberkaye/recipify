@@ -1,29 +1,28 @@
-import { FETCH_RECIPE } from '../actions/types';
+import { FETCH_RECIPE, FETCH_RANDOM } from '../actions/types';
 
-const INITIAL_STATE = {
-  id: '',
-  name: '',
-  category: '',
-  area: '',
-  instructions: '',
-  imgLink: '',
-  tags: [],
-  videoLink: '',
-  ingredients: [],
-  measures: [],
-};
+const INITIAL_STATE = [
+  {
+    id: '',
+    name: '',
+    category: '',
+    area: '',
+    instructions: '',
+    imgLink: '',
+    tags: [],
+    videoLink: '',
+    ingredients: [],
+    measures: [],
+  },
+];
 
 export default (state = INITIAL_STATE, action) => {
-  let recipeObj = { ...state };
-  if (action.type === FETCH_RECIPE) {
-    recipeObj = action.payload;
-  }
   switch (action.type) {
     case FETCH_RECIPE:
-      return {
-        ...state,
-        ...recipeObj,
-      };
+      return [action.payload];
+    case FETCH_RANDOM:
+      console.log('action.payload: ', action.payload);
+      console.log('sa: ', [...action.payload]);
+      return [...action.payload];
     default:
       return state;
   }

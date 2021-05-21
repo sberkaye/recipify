@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+
+import recipeActions from '../redux/actions/actionRecipe';
+
+const { fetchRecipesByName } = recipeActions;
 
 const useInputStyles = makeStyles({
   root: {
@@ -38,27 +44,35 @@ const useRootStyles = makeStyles((theme) => ({
   },
 }));
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   const [term, setTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState(term);
   const classes = useInputStyles();
   const rootClasses = useRootStyles();
 
   useEffect(() => {
-    const timerId = setTimeout(() => setDebouncedTerm(term), 500);
+    const timerId = setTimeout(() => {
+      setDebouncedTerm(term);
+    }, 500);
     return () => {
       clearTimeout(timerId);
     };
   }, [term]);
 
-  useEffect(() => {}, [debouncedTerm]);
+  useEffect(() => {
+    if (debouncedTerm) {
+      props.fetchRecipesByName(debouncedTerm);
+    }
+  }, [debouncedTerm]);
 
   return (
     <TextField
       className={rootClasses.root}
       variant="outlined"
       autoFocus
-      onChange={setTerm}
+      onChange={(e) => {
+        setTerm(e.target.value);
+      }}
       placeholder="Search for a recipe"
       InputProps={{
         startAdornment: (
@@ -72,4 +86,8 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+SearchBar.propTypes = {
+  fetchRecipesByName: PropTypes.func.isRequired,
+};
+
+export default connect(null, { fetchRecipesByName })(SearchBar);

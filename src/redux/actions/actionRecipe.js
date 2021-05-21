@@ -1,4 +1,4 @@
-import { FETCH_RECIPE, FETCH_RANDOM } from './types';
+import { FETCH_RECIPE, FETCH_RANDOM, FETCH_RECIPES_BY_NAME } from './types';
 import tmdb from '../../api/tmdb';
 // import _ from 'underscore';
 
@@ -7,8 +7,11 @@ import tmdb from '../../api/tmdb';
  * @param {object} response - API response to create a recipe object from
  * @returns a recipe object modified according to the reducer
  */
-const createRecipeFromResponse = (response) => {
-  const data = response.data.meals[0];
+const createRecipeFromResponse = (response, index = 0) => {
+  const data = response.data.meals[index];
+  if (!data) {
+    return {};
+  }
   const {
     idMeal,
     strMeal,
@@ -74,4 +77,21 @@ const getRandomRecipe = (count) => async (dispatch) => {
   dispatch({ type: FETCH_RANDOM, payload: randoms });
 };
 
-export default { fetchRecipeById, getRandomRecipe };
+const fetchRecipesByName = (searchTerm) => async (dispatch) => {
+  const results = [];
+  const response = await tmdb.get('/search.php', {
+    params: {
+      s: searchTerm,
+    },
+  });
+  console.log('aha response: ', response);
+  const { meals } = response.data;
+  if (!meals) {
+    dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
+    return;
+  }
+  meals.forEach((meal) => results.push(meal));
+  dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
+};
+
+export default { fetchRecipeById, getRandomRecipe, fetchRecipesByName };

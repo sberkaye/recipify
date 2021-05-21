@@ -1,5 +1,9 @@
 import _ from 'underscore';
-import { FETCH_RECIPE, FETCH_RANDOM } from '../actions/types';
+import {
+  FETCH_RECIPE,
+  FETCH_RANDOM,
+  FETCH_RECIPES_BY_NAME,
+} from '../actions/types';
 
 /*
   How a recipe object should look like:
@@ -37,6 +41,12 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         recipes: [...state.recipes, ...action.payload],
+      };
+    case FETCH_RECIPES_BY_NAME:
+      console.log('aha search: ', action.payload);
+      return {
+        ...state,
+        searchResults: action.payload,
       };
     default:
       return state;

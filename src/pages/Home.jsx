@@ -36,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   spinner: {
     minHeight: '100vh',
     flexGrow: 1,
+    paddingTop: '5rem',
   },
 }));
 
@@ -106,7 +107,7 @@ const Home = (props) => {
       container
       xs={12}
       align="center"
-      alignItems="center"
+      alignItems="flex-start"
       justify="center"
       className={classes.spinner}
     >

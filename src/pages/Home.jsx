@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line object-curly-newline
 import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CircleLoader from 'react-spinners/CircleLoader';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -86,6 +86,7 @@ const Home = (props) => {
   }, [cardCount]);
 
   const classes = useStyles();
+  const theme = useTheme();
 
   const renderCards = () =>
     // eslint-disable-next-line implicit-arrow-linebreak
@@ -109,7 +110,7 @@ const Home = (props) => {
       justify="center"
       className={classes.spinner}
     >
-      <CircleLoader />
+      <CircleLoader color={theme.palette.primary.main} />
     </Grid>
   );
 };
@@ -120,7 +121,7 @@ Home.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  recipes: state.recipes,
+  recipes: state.recipes.recipes,
 });
 
 export default connect(mapStateToProps, { getRandomRecipe })(Home);

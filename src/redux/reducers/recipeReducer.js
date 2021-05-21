@@ -17,18 +17,27 @@ import { FETCH_RECIPE, FETCH_RANDOM } from '../actions/types';
   },
  */
 
-const INITIAL_STATE = [];
+const INITIAL_STATE = {
+  recipes: [],
+  searchResults: [],
+};
 
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_RECIPE:
       // if the recipe is not present in the store, add it
-      if (!_.find(state, (recipe) => recipe.id === action.payload.id)) {
-        return [...state, action.payload];
+      if (!_.find(state.recipes, (recipe) => recipe.id === action.payload.id)) {
+        return {
+          ...state,
+          recipes: [...state.recipes, action.payload],
+        };
       }
       return state;
     case FETCH_RANDOM:
-      return [...state, ...action.payload];
+      return {
+        ...state,
+        recipes: [...state.recipes, ...action.payload],
+      };
     default:
       return state;
   }

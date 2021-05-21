@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, InputAdornment } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
@@ -39,12 +39,26 @@ const useRootStyles = makeStyles((theme) => ({
 }));
 
 const SearchBar = () => {
+  const [term, setTerm] = useState('');
+  const [debouncedTerm, setDebouncedTerm] = useState(term);
   const classes = useInputStyles();
   const rootClasses = useRootStyles();
+
+  useEffect(() => {
+    const timerId = setTimeout(() => setDebouncedTerm(term), 500);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [term]);
+
+  useEffect(() => {}, [debouncedTerm]);
+
   return (
     <TextField
       className={rootClasses.root}
       variant="outlined"
+      autoFocus
+      onChange={setTerm}
       placeholder="Search for a recipe"
       InputProps={{
         startAdornment: (

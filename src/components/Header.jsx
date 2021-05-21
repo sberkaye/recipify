@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(4),
     // increase padding in smaller screens to have space between buttons and title
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(6),
+      padding: theme.spacing(0),
       maxWidth: '100%',
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${headerSmall})`,
     },
@@ -26,9 +26,11 @@ const Header = () => {
   const classes = useStyles();
   return (
     <Grid item container direction="column" spacing={0}>
-      <ButtonBar />
       <Grid item>
-        <Container className={classes.headerContainer}>
+        <ButtonBar />
+      </Grid>
+      <Grid item alignItems="center">
+        <Container disableGutters className={classes.headerContainer}>
           <Typography variant="h1" align="center">
             Recipify
           </Typography>

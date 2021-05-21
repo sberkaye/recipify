@@ -136,7 +136,7 @@ Recipe.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-  recipes: state.recipes,
+  recipes: state.recipes.recipes,
 });
 
 export default connect(mapStateToProps, { fetchRecipeById })(Recipe);

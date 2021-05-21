@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 // eslint-disable-next-line object-curly-newline
 import { Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import CircleLoader from 'react-spinners/CircleLoader';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-// import headerSmall from "./images/header-bg-small.jpg";
 import mainBgMedium from '../images/main-bg-medium.jpg';
-
+import mainBgSmall from '../images/main-bg-small.jpg';
 import FoodCard from '../components/FoodCard';
 
 import recipeActions from '../redux/actions/actionRecipe';
@@ -24,12 +24,18 @@ const breakpoints = {
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundImage: `linear-gradient(rgba(255, 136, 0, 0.7), rgba(255, 136, 0, 0.7)), url(${mainBgMedium})`,
-    backgroundSize: 'cover',
     padding: theme.spacing(7),
     maxWidth: '100%',
     minHeight: '100%',
     flexGrow: 1,
     margin: 0,
+    [theme.breakpoints.down('sm')]: {
+      backgroundImage: `linear-gradient(rgba(255, 136, 0, 0.7), rgba(255, 136, 0, 0.7)), url(${mainBgSmall})`,
+    },
+  },
+  spinner: {
+    minHeight: '100vh',
+    flexGrow: 1,
   },
 }));
 
@@ -94,7 +100,17 @@ const Home = (props) => {
       {renderCards()}
     </Grid>
   ) : (
-    <div>SA</div>
+    <Grid
+      item
+      container
+      xs={12}
+      align="center"
+      alignItems="center"
+      justify="center"
+      className={classes.spinner}
+    >
+      <CircleLoader />
+    </Grid>
   );
 };
 

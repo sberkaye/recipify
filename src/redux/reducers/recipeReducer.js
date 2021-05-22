@@ -45,7 +45,6 @@ export default (state = INITIAL_STATE, action) => {
         recipes: [...state.recipes, ...action.payload],
       };
     case FETCH_RECIPES_BY_NAME:
-      console.log('aha search: ', action.payload);
       return {
         ...state,
         searchResults: action.payload,

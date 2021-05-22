@@ -5,15 +5,15 @@ import PropTypes from 'prop-types';
 import {
   TextField,
   InputAdornment,
-  // List,
-  // ListItem,
-  // ListItemText,
-  // ListItemSecondaryAction,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
 } from '@material-ui/core';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-// import Tag from './Tag';
+import Tag from './Tag';
 
 import recipeActions from '../redux/actions/actionRecipe';
 
@@ -56,12 +56,15 @@ const useRootStyles = makeStyles((theme) => ({
     zIndex: 99,
     left: '50%',
     width: '80%',
+    top: '50%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
     transform: 'translateX(-50%)',
     position: 'absolute',
+    background: '#fff',
   },
+  link: {},
 }));
 
 const SearchBar = (props) => {
@@ -69,7 +72,7 @@ const SearchBar = (props) => {
   const [debouncedTerm, setDebouncedTerm] = useState(term);
   const classes = useInputStyles();
   const rootClasses = useRootStyles();
-  // const { results } = props;
+  const { results } = props;
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -84,18 +87,18 @@ const SearchBar = (props) => {
     props.fetchRecipesByName(debouncedTerm);
   }, [debouncedTerm]);
 
-  // const renderSearchResults = () =>
-  //   // eslint-disable-next-line implicit-arrow-linebreak
-  //   results.map(({ name, id, tags }) => (
-  //     <Link to={`/recipe/${id}`}>
-  //       <ListItem button divider>
-  //         <ListItemText primary={name} />
-  //         <ListItemSecondaryAction>
-  //           {tags && tags.map((tag) => <Tag type="tag">{tag}</Tag>)}
-  //         </ListItemSecondaryAction>
-  //       </ListItem>
-  //     </Link>
-  //   ));
+  const renderSearchResults = () =>
+    // eslint-disable-next-line implicit-arrow-linebreak
+    results.map(({ name, id, tags }) => (
+      <Link to={`/recipe/${id}`}>
+        <ListItem button divider>
+          <ListItemText primary={name} />
+          <ListItemSecondaryAction>
+            {tags && tags.map((tag) => <Tag type="tag">{tag}</Tag>)}
+          </ListItemSecondaryAction>
+        </ListItem>
+      </Link>
+    ));
 
   return (
     <>
@@ -116,18 +119,20 @@ const SearchBar = (props) => {
           classes,
         }}
       />
-      {/* {results.length ? (
-        <List className={rootClasses.list}>{renderSearchResults()}</List>
+      {results.length ? (
+        <div style={{ position: 'relative' }}>
+          <List className={rootClasses.list}>{renderSearchResults()}</List>
+        </div>
       ) : (
         <div style={{ display: 'none' }} />
-      )} */}
+      )}
     </>
   );
 };
 
 SearchBar.propTypes = {
   fetchRecipesByName: PropTypes.func.isRequired,
-  // results: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  results: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
 };
 
 const mapStateToProps = (state) => ({

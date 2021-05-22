@@ -80,7 +80,7 @@ const getRandomRecipe = async () => {
  * @param {number} count - count of the recipes that will be stored
  */
 const getRandomRecipes = (count) => async (dispatch) => {
-  const randoms = new Set();
+  const randoms = new Set(); // using a Set to get unique values
   const promises = [];
   while (promises.length < count) {
     promises.push(tmdb.get('/random.php'));
@@ -94,12 +94,26 @@ const getRandomRecipes = (count) => async (dispatch) => {
 };
 
 /**
+ * Remove the recipe with the given ID from the redux store.
+ * @param {number} id - id of the recipe to be removed from the store
+ */
+const removeRecipe = (id) => ({
+  type: REMOVE_RECIPE,
+  payload: id,
+});
+
+/**
  * Fetch recipes from API by their name, if their name completely or
- * partially matches the search term.
+ * partially matches the search term. If the search term is empty,
+ * do not fetch any recipe.
  * @param {string} searchTerm - name of the recipe that is searched
  */
 const fetchRecipesByName = (searchTerm) => async (dispatch) => {
-  const results = [];
+  let results = [];
+  if (!searchTerm) {
+    dispatch({ type: FETCH_RECIPES_BY_NAME, payload: [] });
+    return;
+  }
   const response = await tmdb.get('/search.php', {
     params: {
       s: searchTerm,
@@ -110,20 +124,26 @@ const fetchRecipesByName = (searchTerm) => async (dispatch) => {
     dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
     return;
   }
+
   meals.forEach((meal, index) => {
     results.push(createRecipeFromResponse(response, index));
   });
+  console.log(results);
+  results = results.sort((a, b) => {
+    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
+    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
+    if (nameA < nameB) {
+      return -1;
+    }
+    if (nameA > nameB) {
+      return 1;
+    }
+
+    // names must be equal
+    return 0;
+  });
   dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
 };
-
-/**
- * Remove the recipe with the given ID from the redux store.
- * @param {number} id - id of the recipe to be removed from the store
- */
-const removeRecipe = (id) => ({
-  type: REMOVE_RECIPE,
-  payload: id,
-});
 
 export default {
   fetchRecipeById,

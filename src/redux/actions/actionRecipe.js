@@ -1,6 +1,10 @@
-import { FETCH_RECIPE, FETCH_RANDOM, FETCH_RECIPES_BY_NAME } from './types';
+import {
+  FETCH_RECIPE,
+  FETCH_RANDOM,
+  FETCH_RECIPES_BY_NAME,
+  REMOVE_RECIPE,
+} from './types';
 import tmdb from '../../api/tmdb';
-// import _ from 'underscore';
 
 /**
  * Helper function to get API response and return a proper recipe object from it.
@@ -63,20 +67,37 @@ const fetchRecipeById = (recipeId) => async (dispatch) => {
 };
 
 /**
+ * Get a random recipe from the API
+ * @returns random recipe object
+ */
+const getRandomRecipe = async () => {
+  const response = await tmdb.get('/random.php');
+  return createRecipeFromResponse(response);
+};
+
+/**
  * Get a number of random recipes and store them in the redux store.
  * @param {number} count - count of the recipes that will be stored
  */
-const getRandomRecipe = (count) => async (dispatch) => {
-  const randoms = [];
+const getRandomRecipes = (count) => async (dispatch) => {
+  const randoms = new Set();
   const promises = [];
   while (promises.length < count) {
     promises.push(tmdb.get('/random.php'));
   }
-  const results = await Promise.all(promises);
-  results.forEach((res) => randoms.push(createRecipeFromResponse(res)));
+  const promiseResults = await Promise.all(promises);
+  promiseResults.forEach((res) => randoms.add(createRecipeFromResponse(res)));
+  while (randoms.size < count) {
+    randoms.add(getRandomRecipe());
+  }
   dispatch({ type: FETCH_RANDOM, payload: randoms });
 };
 
+/**
+ * Fetch recipes from API by their name, if their name completely or
+ * partially matches the search term.
+ * @param {string} searchTerm - name of the recipe that is searched
+ */
 const fetchRecipesByName = (searchTerm) => async (dispatch) => {
   const results = [];
   const response = await tmdb.get('/search.php', {
@@ -84,14 +105,29 @@ const fetchRecipesByName = (searchTerm) => async (dispatch) => {
       s: searchTerm,
     },
   });
-  console.log('aha response: ', response);
   const { meals } = response.data;
   if (!meals) {
     dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
     return;
   }
-  meals.forEach((meal) => results.push(meal));
+  meals.forEach((meal, index) => {
+    results.push(createRecipeFromResponse(response, index));
+  });
   dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
 };
 
-export default { fetchRecipeById, getRandomRecipe, fetchRecipesByName };
+/**
+ * Remove the recipe with the given ID from the redux store.
+ * @param {number} id - id of the recipe to be removed from the store
+ */
+const removeRecipe = (id) => ({
+  type: REMOVE_RECIPE,
+  payload: id,
+});
+
+export default {
+  fetchRecipeById,
+  getRandomRecipes,
+  fetchRecipesByName,
+  removeRecipe,
+};

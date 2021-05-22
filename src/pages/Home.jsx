@@ -11,7 +11,7 @@ import FoodCard from '../components/FoodCard';
 
 import recipeActions from '../redux/actions/actionRecipe';
 
-const { getRandomRecipe } = recipeActions;
+const { getRandomRecipes, removeRecipe } = recipeActions;
 
 const breakpoints = {
   xs: 0,
@@ -44,7 +44,7 @@ const Home = (props) => {
   const [cardCount, setCardCount] = useState(0);
   const [screenSize, setScreenSize] = useState(null); // to communicate the screen size to the cards
   // eslint-disable-next-line no-shadow
-  const { recipes, getRandomRecipe } = props;
+  const { recipes, getRandomRecipes, removeRecipe } = props;
 
   /**
    * A helper method to determine the number of FoodCard components
@@ -81,8 +81,11 @@ const Home = (props) => {
   // whenever the card count is updated with a positive number and there are not enough cards,
   // get required number of random recipes to complement
   useEffect(() => {
+    if (recipes.length === 1) {
+      removeRecipe(recipes[0].id);
+    }
     if (cardCount > 0 && recipes.length < cardCount) {
-      getRandomRecipe(cardCount - recipes.length);
+      getRandomRecipes(cardCount - recipes.length);
     }
   }, [cardCount]);
 
@@ -97,7 +100,7 @@ const Home = (props) => {
       </Grid>
     ));
 
-  return recipes.length ? (
+  return recipes.length === cardCount ? (
     <Grid container item className={classes.root} spacing={4} align="center">
       {renderCards()}
     </Grid>
@@ -117,12 +120,16 @@ const Home = (props) => {
 };
 
 Home.propTypes = {
-  recipes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
-  getRandomRecipe: PropTypes.func.isRequired,
+  recipes: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string }))
+    .isRequired,
+  getRandomRecipes: PropTypes.func.isRequired,
+  removeRecipe: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   recipes: state.recipes.recipes,
 });
 
-export default connect(mapStateToProps, { getRandomRecipe })(Home);
+export default connect(mapStateToProps, { getRandomRecipes, removeRecipe })(
+  Home,
+);

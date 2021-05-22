@@ -45,6 +45,28 @@ const Recipe = (props) => {
   const { recipes, fetchRecipeById, match } = props;
 
   const { id } = match.params;
+
+  useEffect(() => {
+    fetchRecipeById(id);
+  }, []);
+
+  let recipe = {
+    name: '',
+    category: '',
+    area: '',
+    imgLink: '',
+    instructions: '',
+    tags: [],
+    ingredients: [],
+    measures: [],
+  };
+
+  const foundRecipe = recipes.find((rec) => rec.id === id);
+
+  if (foundRecipe) {
+    recipe = foundRecipe;
+  }
+
   const {
     name,
     category,
@@ -54,11 +76,7 @@ const Recipe = (props) => {
     tags,
     ingredients,
     measures,
-  } = recipes.find((rec) => rec.id === id);
-
-  useEffect(() => {
-    fetchRecipeById(id);
-  }, []);
+  } = recipe;
 
   const renderTags = () => (
     <>

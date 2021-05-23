@@ -53,18 +53,15 @@ const useRootStyles = makeStyles((theme) => ({
     position: 'absolute',
   },
   list: {
-    zIndex: 99,
-    left: '50%',
-    width: '80%',
-    top: '50%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
-    transform: 'translateX(-50%)',
-    position: 'absolute',
     background: '#fff',
   },
-  link: {},
+  link: {
+    textDecoration: 'none',
+    color: '#333',
+  },
 }));
 
 const SearchBar = (props) => {
@@ -77,7 +74,7 @@ const SearchBar = (props) => {
   useEffect(() => {
     const timerId = setTimeout(() => {
       setDebouncedTerm(term);
-    }, 500);
+    }, 300);
     return () => {
       clearTimeout(timerId);
     };
@@ -90,7 +87,11 @@ const SearchBar = (props) => {
   const renderSearchResults = () =>
     // eslint-disable-next-line implicit-arrow-linebreak
     results.map(({ name, id, tags }) => (
-      <Link to={`/recipe/${id}`}>
+      <Link
+        className={rootClasses.link}
+        to={`/recipe/${id}`}
+        onClick={() => setTerm('')}
+      >
         <ListItem button divider>
           <ListItemText primary={name} />
           <ListItemSecondaryAction>
@@ -120,9 +121,7 @@ const SearchBar = (props) => {
         }}
       />
       {results.length ? (
-        <div style={{ position: 'relative' }}>
-          <List className={rootClasses.list}>{renderSearchResults()}</List>
-        </div>
+        <List className={rootClasses.list}>{renderSearchResults()}</List>
       ) : (
         <div style={{ display: 'none' }} />
       )}

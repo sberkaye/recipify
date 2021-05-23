@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import {
   FETCH_RECIPE,
   FETCH_RANDOM,
@@ -72,7 +73,8 @@ const fetchRecipeById = (recipeId) => async (dispatch) => {
  */
 const getRandomRecipe = async () => {
   const response = await tmdb.get('/random.php');
-  return createRecipeFromResponse(response);
+  const recipe = createRecipeFromResponse(response);
+  return recipe;
 };
 
 /**
@@ -80,15 +82,30 @@ const getRandomRecipe = async () => {
  * @param {number} count - count of the recipes that will be stored
  */
 const getRandomRecipes = (count) => async (dispatch) => {
-  const randoms = new Set(); // using a Set to get unique values
+  const randoms = [];
   const promises = [];
+  const uniqueIds = {};
   while (promises.length < count) {
     promises.push(tmdb.get('/random.php'));
   }
   const promiseResults = await Promise.all(promises);
-  promiseResults.forEach((res) => randoms.add(createRecipeFromResponse(res)));
-  while (randoms.size < count) {
-    randoms.add(getRandomRecipe());
+  const uniqueResults = promiseResults.filter((res) => {
+    const id = res.data.meals[0].idMeal;
+    if (uniqueIds[id]) {
+      return false;
+    }
+    uniqueIds[id] = true;
+    return true;
+  });
+  uniqueResults.forEach((result) => {
+    randoms.push(createRecipeFromResponse(result));
+  });
+  while (randoms.length < count) {
+    const newRandom = await getRandomRecipe();
+    if (!uniqueIds[newRandom.id]) {
+      uniqueIds[newRandom.id] = true;
+      randoms.push(newRandom);
+    }
   }
   dispatch({ type: FETCH_RANDOM, payload: randoms });
 };
@@ -128,7 +145,6 @@ const fetchRecipesByName = (searchTerm) => async (dispatch) => {
   meals.forEach((meal, index) => {
     results.push(createRecipeFromResponse(response, index));
   });
-  console.log(results);
   results = results.sort((a, b) => {
     const nameA = a.name.toUpperCase(); // ignore upper and lowercase
     const nameB = b.name.toUpperCase(); // ignore upper and lowercase

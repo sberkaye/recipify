@@ -76,6 +76,10 @@ const Home = (props) => {
   useEffect(() => {
     window.addEventListener('resize', handleCardCount);
     handleCardCount();
+
+    return () => {
+      window.removeEventListener('resize', handleCardCount);
+    };
   }, []);
 
   // whenever the card count is updated with a positive number and there are not enough cards,

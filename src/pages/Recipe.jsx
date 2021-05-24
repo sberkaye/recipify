@@ -9,6 +9,7 @@ import Image from 'material-ui-image';
 import { connect } from 'react-redux';
 import DOMPurify from 'dompurify';
 import PropTypes from 'prop-types';
+import { Element, scroller } from 'react-scroll';
 import Tag from '../components/Tag';
 import IngredientsTable from '../components/IngredientsTable';
 import recipeActions from '../redux/actions/actionRecipe';
@@ -42,13 +43,21 @@ const useStyles = makeStyles((theme) => ({
 const Recipe = (props) => {
   const classes = useStyles();
   // eslint-disable-next-line no-shadow
-  const { recipes, fetchRecipeById, match } = props;
+  const { currentRecipe, fetchRecipeById, match } = props;
 
   const { id } = match.params;
 
   useEffect(() => {
-    fetchRecipeById(id);
-  }, []);
+    const getData = async () => {
+      console.log('HELLO HELLO HERE WE GO');
+      await fetchRecipeById(id);
+    };
+    getData();
+    scroller.scrollTo('title', {
+      duration: 800,
+      smooth: true,
+    });
+  });
 
   let recipe = {
     name: '',
@@ -61,10 +70,8 @@ const Recipe = (props) => {
     measures: [],
   };
 
-  const foundRecipe = recipes.find((rec) => rec.id === id);
-
-  if (foundRecipe) {
-    recipe = foundRecipe;
+  if (currentRecipe.name) {
+    recipe = currentRecipe;
   }
 
   const {
@@ -107,9 +114,11 @@ const Recipe = (props) => {
       >
         {/* ----------------------------------------------------------------------- */}
         <Grid item xs={12}>
-          <Typography variant="h3" className={classes.title}>
-            {name}
-          </Typography>
+          <Element name="title">
+            <Typography variant="h3" className={classes.title}>
+              {name}
+            </Typography>
+          </Element>
         </Grid>
         {/* ----------------------------------------------------------------------- */}
         <Grid item xs={12}>
@@ -149,12 +158,12 @@ const Recipe = (props) => {
 };
 
 Recipe.propTypes = {
-  recipes: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  currentRecipe: PropTypes.shape().isRequired,
   fetchRecipeById: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  recipes: state.recipes.recipes,
+  currentRecipe: state.recipes.currentRecipe,
 });
 
 export default connect(mapStateToProps, { fetchRecipeById })(Recipe);

@@ -13,10 +13,10 @@ import tmdb from '../../api/tmdb';
  * @returns a recipe object modified according to the reducer
  */
 const createRecipeFromResponse = (response, index = 0) => {
-  const data = response.data.meals[index];
-  if (!data) {
+  if (!response.data.meals) {
     return {};
   }
+  const data = response.data.meals[index];
   const {
     idMeal,
     strMeal,
@@ -57,7 +57,15 @@ const createRecipeFromResponse = (response, index = 0) => {
  * Get a recipe into the redux store by its ID.
  * @param {number} recipeId - ID number of the recipe
  */
-const fetchRecipeById = (recipeId) => async (dispatch) => {
+const fetchRecipeById = (recipeId) => async (dispatch, getState) => {
+  // if the recipe has already been fetched, use the previously fetched object
+  if (getState().recipes.fetchedRecipes.find((r) => r.id === recipeId)) {
+    dispatch({
+      type: FETCH_RECIPE,
+      payload: getState().recipes.fetchedRecipes.find((r) => r.id === recipeId),
+    });
+    return;
+  }
   const response = await tmdb.get('/lookup.php', {
     params: {
       i: recipeId,
@@ -81,14 +89,22 @@ const getRandomRecipe = async () => {
  * Get a number of random recipes and store them in the redux store.
  * @param {number} count - count of the recipes that will be stored
  */
-const getRandomRecipes = (count) => async (dispatch) => {
+const getRandomRecipes = (count) => async (dispatch, getState) => {
   const randoms = [];
   const promises = [];
-  const uniqueIds = {};
+  // an object to flag already fetched recipe IDs to keep fetched IDs unique
+  const uniqueIds = getState().recipes.randoms.reduce((acc, curRandom) => {
+    acc[curRandom] = true;
+    return acc;
+  }, {});
+  // make the required number of API requests,
+  // and resolve them all with Promise.all()
   while (promises.length < count) {
     promises.push(tmdb.get('/random.php'));
   }
   const promiseResults = await Promise.all(promises);
+  // add the resolved values to the uniqueIds object,
+  // as long as the same ID hasn't already been fetched
   const uniqueResults = promiseResults.filter((res) => {
     const id = res.data.meals[0].idMeal;
     if (uniqueIds[id]) {
@@ -97,9 +113,13 @@ const getRandomRecipes = (count) => async (dispatch) => {
     uniqueIds[id] = true;
     return true;
   });
+  // add the unique results to randoms array
   uniqueResults.forEach((result) => {
     randoms.push(createRecipeFromResponse(result));
   });
+  // while the number of unique random values is less than the required amount,
+  // fetch new random values and add them to the randoms array
+  // if they are unique amongst the other values
   while (randoms.length < count) {
     const newRandom = await getRandomRecipe();
     if (!uniqueIds[newRandom.id]) {

@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -53,6 +54,11 @@ const useRootStyles = makeStyles((theme) => ({
     position: 'absolute',
   },
   list: {
+    zIndex: 100,
+    width: '80%',
+    left: '50%',
+    position: 'absolute',
+    transform: 'translate(-50%, 1rem)',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
@@ -95,14 +101,19 @@ const SearchBar = (props) => {
         <ListItem button divider>
           <ListItemText primary={name} />
           <ListItemSecondaryAction>
-            {tags && tags.map((tag) => <Tag type="tag">{tag}</Tag>)}
+            {tags &&
+              tags.map((tag) => (
+                <Tag sm type="tag">
+                  {tag}
+                </Tag>
+              ))}
           </ListItemSecondaryAction>
         </ListItem>
       </Link>
     ));
 
   return (
-    <>
+    <div style={{ position: 'relative' }}>
       <TextField
         className={rootClasses.root}
         variant="outlined"
@@ -110,6 +121,7 @@ const SearchBar = (props) => {
         onChange={(e) => {
           setTerm(e.target.value);
         }}
+        value={term}
         placeholder="Search for a recipe"
         InputProps={{
           startAdornment: (
@@ -125,7 +137,7 @@ const SearchBar = (props) => {
       ) : (
         <div style={{ display: 'none' }} />
       )}
-    </>
+    </div>
   );
 };
 

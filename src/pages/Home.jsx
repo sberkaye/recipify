@@ -44,7 +44,7 @@ const Home = (props) => {
   const [cardCount, setCardCount] = useState(0);
   const [screenSize, setScreenSize] = useState(null); // to communicate the screen size to the cards
   // eslint-disable-next-line no-shadow
-  const { recipes, getRandomRecipes, removeRecipe } = props;
+  const { randoms, getRandomRecipes, removeRecipe } = props;
 
   /**
    * A helper method to determine the number of FoodCard components
@@ -85,26 +85,31 @@ const Home = (props) => {
   // whenever the card count is updated with a positive number and there are not enough cards,
   // get required number of random recipes to complement
   useEffect(() => {
-    if (recipes.length === 1) {
-      removeRecipe(recipes[0].id);
+    console.log(`randoms.length = ${randoms.length}\ncardCount = ${cardCount}`);
+    if (randoms.length === 1) {
+      removeRecipe(randoms[0].id);
     }
-    if (cardCount > 0 && recipes.length < cardCount) {
-      getRandomRecipes(cardCount - recipes.length);
+    if (randoms.length < cardCount) {
+      getRandomRecipes(cardCount - randoms.length);
     }
   }, [cardCount]);
 
   const classes = useStyles();
   const theme = useTheme();
 
-  const renderCards = () =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    recipes.map((recipe) => (
-      <Grid key={recipe.id} item xs={12} sm={6} md={4} lg={3} xl={2}>
-        <FoodCard size={screenSize} cardDetails={recipe} />
-      </Grid>
-    ));
+  const renderCards = () => {
+    const cards = [];
+    for (let i = 0; i < cardCount; i += 1) {
+      cards.push(
+        <Grid key={randoms[i].id} item xs={12} sm={6} md={4} lg={3} xl={2}>
+          <FoodCard size={screenSize} cardDetails={randoms[i]} />
+        </Grid>,
+      );
+    }
+    return cards;
+  };
 
-  return recipes.length === cardCount ? (
+  return randoms.length === cardCount || randoms.length > cardCount ? (
     <Grid container item className={classes.root} spacing={4} align="center">
       {renderCards()}
     </Grid>
@@ -124,14 +129,14 @@ const Home = (props) => {
 };
 
 Home.propTypes = {
-  recipes: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string }))
+  randoms: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string }))
     .isRequired,
   getRandomRecipes: PropTypes.func.isRequired,
   removeRecipe: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
-  recipes: state.recipes.recipes,
+  randoms: state.recipes.randoms,
 });
 
 export default connect(mapStateToProps, { getRandomRecipes, removeRecipe })(

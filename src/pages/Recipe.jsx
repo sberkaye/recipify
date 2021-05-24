@@ -3,7 +3,7 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/prop-types */
 /* eslint-disable object-curly-newline */
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid, Typography, makeStyles } from '@material-ui/core';
 import Image from 'material-ui-image';
 import { connect } from 'react-redux';
@@ -42,10 +42,15 @@ const useStyles = makeStyles((theme) => ({
 
 const Recipe = (props) => {
   const classes = useStyles();
+  const [tableRef, setTableRef] = useState();
   // eslint-disable-next-line no-shadow
   const { currentRecipe, fetchRecipeById, match } = props;
 
   const { id } = match.params;
+
+  const handleTableRef = (ref) => {
+    setTableRef(ref.current);
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -127,16 +132,24 @@ const Recipe = (props) => {
         {/* ----------------------------------------------------------------------- */}
         <Grid item xs={1} sm={1} />
         <Grid item xs={10} sm={3}>
-          <Image src={imgLink} />
+          {tableRef ? console.log(tableRef.clientHeight) : console.log('sa')}
+          {tableRef && (
+            <Image
+              aspectRatio={tableRef.clientWidth / (2 * tableRef.clientHeight)}
+              src={imgLink}
+            />
+          )}
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={1} />
         <Grid item xs={10} sm={4}>
           <IngredientsTable
+            getTableRef={handleTableRef}
             rows={ingredients.map((ingredient, index) => ({
               ingredient,
               measure: measures[index],
             }))}
+            ref={tableRef}
           />
         </Grid>
         <Grid item xs={1} sm={2} />

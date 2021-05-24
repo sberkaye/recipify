@@ -5,21 +5,16 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import CircleLoader from 'react-spinners/CircleLoader';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import mainBgMedium from '../images/main-bg-medium.jpg';
 import mainBgSmall from '../images/main-bg-small.jpg';
 import FoodCard from '../components/FoodCard';
 
+import useScreenSize from '../hooks/useScreenSize';
+
 import recipeActions from '../redux/actions/actionRecipe';
 
 const { getRandomRecipes, removeRecipe } = recipeActions;
-
-const breakpoints = {
-  xs: 0,
-  sm: 600,
-  md: 960,
-  lg: 1280,
-  xl: 1920,
-};
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Home = (props) => {
   const [cardCount, setCardCount] = useState(0);
-  const [screenSize, setScreenSize] = useState(null); // to communicate the screen size to the cards
+  const [screenSize, calculateSize] = useScreenSize();
   // eslint-disable-next-line no-shadow
   const { randoms, getRandomRecipes, removeRecipe } = props;
 
@@ -51,22 +46,25 @@ const Home = (props) => {
    * to be rendered depending on the screen size
    */
   const handleCardCount = () => {
-    const width = window.innerWidth;
-    if (width <= breakpoints.sm) {
-      setCardCount(4); // 4 rows, 1 card each
-      setScreenSize('xs');
-    } else if (breakpoints.sm < width && width <= breakpoints.md) {
-      setCardCount(6); // 3 rows, 2 card each
-      setScreenSize('sm');
-    } else if (breakpoints.md < width && width <= breakpoints.lg) {
-      setCardCount(9); // 3 rows, 3 card each
-      setScreenSize('md');
-    } else if (breakpoints.lg < width && width <= breakpoints.xl) {
-      setCardCount(12); // 3 rows, 4 card each
-      setScreenSize('lg');
-    } else {
-      setCardCount(18); // 3 rows, 6 card each
-      setScreenSize('xl');
+    calculateSize();
+    switch (screenSize) {
+      case 'xs':
+        setCardCount(4); // 4 rows, 1 card each
+        break;
+      case 'sm':
+        setCardCount(6); // 3 rows, 2 card each
+        break;
+      case 'md':
+        setCardCount(9); // 3 rows, 3 card each
+        break;
+      case 'lg':
+        setCardCount(12); // 3 rows, 4 card each
+        break;
+      case 'xl':
+        setCardCount(18); // 3 rows, 6 card each
+        break;
+      default:
+        break;
     }
   };
 
@@ -75,8 +73,6 @@ const Home = (props) => {
   // resizes his/her screen
   useEffect(() => {
     window.addEventListener('resize', handleCardCount);
-    handleCardCount();
-
     return () => {
       window.removeEventListener('resize', handleCardCount);
     };

@@ -1,3 +1,4 @@
+/* eslint-disable implicit-arrow-linebreak */
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/jsx-one-expression-per-line */
 import React, { useState, useEffect } from 'react';
@@ -64,6 +65,11 @@ const useRootStyles = makeStyles((theme) => ({
     },
     background: '#fff',
   },
+  secondaryActions: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
   link: {
     textDecoration: 'none',
     color: '#333',
@@ -91,26 +97,39 @@ const SearchBar = (props) => {
   }, [debouncedTerm]);
 
   const renderSearchResults = () =>
-    // eslint-disable-next-line implicit-arrow-linebreak
-    results.map(({ name, id, tags }) => (
-      <Link
-        className={rootClasses.link}
-        to={`/recipe/${id}`}
-        onClick={() => setTerm('')}
-      >
-        <ListItem button divider>
-          <ListItemText primary={name} />
-          <ListItemSecondaryAction>
-            {tags &&
-              tags.map((tag) => (
-                <Tag sm type="tag">
-                  {tag}
-                </Tag>
-              ))}
-          </ListItemSecondaryAction>
-        </ListItem>
-      </Link>
-    ));
+    results.map(
+      ({ name, id, tags }, resultsIndex) =>
+        resultsIndex < 5 && (
+          <Link
+            className={rootClasses.link}
+            to={`/recipe/${id}`}
+            onClick={() => setTerm('')}
+          >
+            <ListItem
+              button
+              key={id}
+              divider={
+                results.length < 5
+                  ? !(resultsIndex === results.length - 1)
+                  : !(resultsIndex === 4)
+              }
+            >
+              <ListItemText primary={name} />
+              <ListItemSecondaryAction className={rootClasses.secondaryActions}>
+                {tags &&
+                  tags.map(
+                    (tag, index) =>
+                      index < 3 && (
+                        <Tag sm type="tag">
+                          {tag}
+                        </Tag>
+                      ),
+                  )}
+              </ListItemSecondaryAction>
+            </ListItem>
+          </Link>
+        ),
+    );
 
   return (
     <div style={{ position: 'relative' }}>

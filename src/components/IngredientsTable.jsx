@@ -1,5 +1,5 @@
 // Takes ingredients and their measures in an array of objects and displays them
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   makeStyles,
   withStyles,
@@ -29,9 +29,16 @@ const HeaderTableCell = withStyles((theme) => ({
 
 const IngredientsTable = (props) => {
   const classes = useStyles();
-  const { rows } = props; // data that will amke up the rows
+  // data that will make up the rows & a function too return
+  // table's ref if needed
+  const { rows, getTableRef } = props;
+  const tableRef = useRef();
+
+  useEffect(() => {
+    getTableRef(tableRef);
+  }, []);
   return (
-    <TableContainer component={Paper}>
+    <TableContainer component={Paper} ref={tableRef}>
       <Table
         className={classes.table}
         size="small"
@@ -65,6 +72,11 @@ IngredientsTable.propTypes = {
       measure: PropTypes.string,
     }),
   ).isRequired,
+  getTableRef: PropTypes.func,
+};
+
+IngredientsTable.defaultProps = {
+  getTableRef: null,
 };
 
 export default IngredientsTable;

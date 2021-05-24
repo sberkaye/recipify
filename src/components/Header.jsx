@@ -29,7 +29,7 @@ const Header = () => {
       <Grid item>
         <ButtonBar />
       </Grid>
-      <Grid item alignItems="center">
+      <Grid item container alignItems="center">
         <Container disableGutters className={classes.headerContainer}>
           <Typography variant="h1" align="center">
             Recipify

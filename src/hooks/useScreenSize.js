@@ -21,7 +21,6 @@ export default () => {
   const [screenSize, setScreenSize] = useState(null);
 
   const handleScreenSize = () => {
-    console.log('HELLO THERE');
     const width = window.innerWidth;
     if (width <= breakpoints.sm) {
       setScreenSize('xs');

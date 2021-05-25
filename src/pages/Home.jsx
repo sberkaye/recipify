@@ -46,7 +46,6 @@ const Home = (props) => {
    * to be rendered depending on the screen size
    */
   const handleCardCount = () => {
-    calculateSize();
     switch (screenSize) {
       case 'xs':
         setCardCount(4); // 4 rows, 1 card each
@@ -68,20 +67,22 @@ const Home = (props) => {
     }
   };
 
-  // decide the number of cards to render depending on the screen size,
-  // and set an event listener to change the card count if user
+  // set an event listener to determine the screen size if user
   // resizes his/her screen
   useEffect(() => {
-    window.addEventListener('resize', handleCardCount);
+    window.addEventListener('resize', calculateSize);
     return () => {
-      window.removeEventListener('resize', handleCardCount);
+      window.removeEventListener('resize', calculateSize);
     };
   }, []);
+
+  // decide the number of cards to be shown depending on
+  // user's screen size
+  useEffect(() => handleCardCount(), [screenSize]);
 
   // whenever the card count is updated with a positive number and there are not enough cards,
   // get required number of random recipes to complement
   useEffect(() => {
-    console.log(`randoms.length = ${randoms.length}\ncardCount = ${cardCount}`);
     if (randoms.length === 1) {
       removeRecipe(randoms[0].id);
     }

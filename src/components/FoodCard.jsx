@@ -43,6 +43,7 @@ const titleBreaks = {
   sm: 16,
   md: 19,
   lg: 21,
+  xl: 23,
 };
 
 const FoodCard = (props) => {

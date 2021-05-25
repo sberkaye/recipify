@@ -13,6 +13,7 @@ import { Element, scroller } from 'react-scroll';
 import Tag from '../components/Tag';
 import IngredientsTable from '../components/IngredientsTable';
 import recipeActions from '../redux/actions/actionRecipe';
+import useScreenSize from '../hooks/useScreenSize';
 
 const { fetchRecipeById } = recipeActions;
 
@@ -43,6 +44,8 @@ const useStyles = makeStyles((theme) => ({
 const Recipe = (props) => {
   const classes = useStyles();
   const [tableRef, setTableRef] = useState();
+  const [screenSize, calculateSize] = useScreenSize();
+  const [imageAspectRatio, setImageAspectRatio] = useState(1 / 1);
   // eslint-disable-next-line no-shadow
   const { currentRecipe, fetchRecipeById, match } = props;
 
@@ -53,8 +56,15 @@ const Recipe = (props) => {
   };
 
   useEffect(() => {
+    window.addEventListener('resize', calculateSize);
+
+    return () => {
+      window.removeEventListener('resize', calculateSize);
+    };
+  }, []);
+
+  useEffect(() => {
     const getData = async () => {
-      console.log('HELLO HELLO HERE WE GO');
       await fetchRecipeById(id);
     };
     getData();
@@ -63,6 +73,26 @@ const Recipe = (props) => {
       smooth: true,
     });
   });
+
+  useEffect(() => {
+    switch (screenSize) {
+      case 'xs':
+        setImageAspectRatio(1 / 1);
+        break;
+      case 'sm':
+      case 'md':
+        setImageAspectRatio(3 / 4);
+        break;
+      case 'lg':
+        setImageAspectRatio(1 / 1);
+        break;
+      case 'xl':
+        setImageAspectRatio(4 / 3);
+        break;
+      default:
+        break;
+    }
+  }, [screenSize]);
 
   let recipe = {
     name: '',
@@ -130,15 +160,9 @@ const Recipe = (props) => {
           {renderTags()}
         </Grid>
         {/* ----------------------------------------------------------------------- */}
-        <Grid item xs={1} sm={1} />
+        <Grid item xs={1} />
         <Grid item xs={10} sm={3}>
-          {tableRef ? console.log(tableRef.clientHeight) : console.log('sa')}
-          {tableRef && (
-            <Image
-              aspectRatio={tableRef.clientWidth / (2 * tableRef.clientHeight)}
-              src={imgLink}
-            />
-          )}
+          <Image aspectRatio={imageAspectRatio} src={imgLink} />
         </Grid>
         <Grid item xs={1} />
         <Grid item xs={1} />

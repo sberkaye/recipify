@@ -25,6 +25,7 @@ const useInputStyles = makeStyles({
   root: {
     background: '#fff',
     border: 'none',
+    boxShadow: '0 1px 2px #ccc',
     // when hovered
     '&:hover': {
       background: '#fff',
@@ -75,6 +76,12 @@ const SearchBar = (props) => {
   const classes = useInputStyles();
   const rootClasses = useRootStyles();
   const { results } = props;
+
+  // const handleArrowKeyPress = (event) => {
+  //   switch (event.keyCode) {
+  //     case
+  //   }
+  // };
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -133,6 +140,7 @@ const SearchBar = (props) => {
         onChange={(e) => {
           setTerm(e.target.value);
         }}
+        onK
         value={term}
         placeholder="Search for a recipe"
         InputProps={{

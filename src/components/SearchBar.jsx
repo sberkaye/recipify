@@ -24,22 +24,15 @@ const { fetchRecipesByName } = recipeActions;
 const useInputStyles = makeStyles({
   root: {
     background: '#fff',
+    border: 'none',
     // when hovered
     '&:hover': {
       background: '#fff',
     },
-    // what happens to the outline when hovered
-    '&:hover $notchedOutline': {
-      border: '1px solid #aaa',
-    },
-    // what happens to the outline when focused
-    '&$focused $notchedOutline': {
-      border: '1px solid #aaa',
-    },
   },
   focused: {},
   notchedOutline: {
-    border: '1px solid #ddd',
+    border: 'none',
   },
 });
 

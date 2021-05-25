@@ -147,6 +147,7 @@ const removeRecipe = (id) => ({
  */
 const fetchRecipesByName = (searchTerm) => async (dispatch) => {
   let results = [];
+  // empty search string
   if (!searchTerm) {
     dispatch({ type: FETCH_RECIPES_BY_NAME, payload: [] });
     return;
@@ -157,6 +158,8 @@ const fetchRecipesByName = (searchTerm) => async (dispatch) => {
     },
   });
   const { meals } = response.data;
+  // if there are no meals matching the search term,
+  // dispatch the results array as it is(empty)
   if (!meals) {
     dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
     return;
@@ -166,17 +169,31 @@ const fetchRecipesByName = (searchTerm) => async (dispatch) => {
     results.push(createRecipeFromResponse(response, index));
   });
   results = results.sort((a, b) => {
-    const nameA = a.name.toUpperCase(); // ignore upper and lowercase
-    const nameB = b.name.toUpperCase(); // ignore upper and lowercase
-    if (nameA < nameB) {
-      return -1;
+    // integer values to determine which name has more priority
+    // the bigger the value, the more priority the name has
+    let aPriority = 0;
+    let bPriority = 0;
+
+    // ignore upper and lowercase
+    const nameA = a.name.toUpperCase();
+    const nameB = b.name.toUpperCase();
+
+    // starting with the search term has more effect on the priority
+    // compared to the alphabetical order of the results
+    if (nameA.startsWith(searchTerm.toUpperCase())) {
+      aPriority += 10;
     }
-    if (nameA > nameB) {
-      return 1;
+    if (nameB.startsWith(searchTerm.toUpperCase())) {
+      bPriority += 10;
     }
 
-    // names must be equal
-    return 0;
+    if (nameA < nameB) {
+      aPriority += 1;
+    } else {
+      bPriority += 1;
+    }
+
+    return aPriority > bPriority ? -1 : 1;
   });
   dispatch({ type: FETCH_RECIPES_BY_NAME, payload: results });
 };

@@ -140,7 +140,6 @@ const SearchBar = (props) => {
         onChange={(e) => {
           setTerm(e.target.value);
         }}
-        onK
         value={term}
         placeholder="Search for a recipe"
         InputProps={{
@@ -152,6 +151,7 @@ const SearchBar = (props) => {
           classes,
         }}
       />
+
       {results.length ? (
         <List className={rootClasses.list}>{renderSearchResults()}</List>
       ) : (

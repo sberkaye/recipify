@@ -1,4 +1,5 @@
 /* eslint-disable no-await-in-loop */
+import _ from 'underscore';
 import {
   FETCH_RECIPE,
   FETCH_RANDOM,
@@ -139,6 +140,15 @@ const removeRecipe = (id) => ({
   payload: id,
 });
 
+const getRecipeByName = _.memoize(async (searchTerm) => {
+  const response = await tmdb.get('/search.php', {
+    params: {
+      s: searchTerm,
+    },
+  });
+  return response;
+});
+
 /**
  * Fetch recipes from API by their name, if their name completely or
  * partially matches the search term. If the search term is empty,
@@ -152,11 +162,7 @@ const fetchRecipesByName = (searchTerm) => async (dispatch) => {
     dispatch({ type: FETCH_RECIPES_BY_NAME, payload: [] });
     return;
   }
-  const response = await tmdb.get('/search.php', {
-    params: {
-      s: searchTerm,
-    },
-  });
+  const response = await getRecipeByName(searchTerm);
   const { meals } = response.data;
   // if there are no meals matching the search term,
   // dispatch the results array as it is(empty)

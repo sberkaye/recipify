@@ -1,7 +1,8 @@
-import { LOGIN } from '../actions/types';
+import { LOGIN, LOGOUT } from '../actions/types';
 
 const INITIAL_STATE = {
-  loggedIn: false,
+  loggedIn: null,
+  userId: null,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -9,7 +10,14 @@ export default (state = INITIAL_STATE, action) => {
     case LOGIN:
       return {
         ...state,
-        loggedIn: action.payload,
+        loggedIn: true,
+        userId: action.payload,
+      };
+    case LOGOUT:
+      return {
+        ...state,
+        loggedIn: false,
+        userId: null,
       };
     default:
       return state;

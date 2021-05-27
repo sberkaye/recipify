@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   AppBar,
   makeStyles,
@@ -16,6 +16,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
+import CLIENT_ID from '../credentials';
 import loginActions from '../redux/actions/actionLogin';
 
 const { userLogin, userLogout } = loginActions;
@@ -82,15 +83,48 @@ const useStyles = makeStyles((theme) => ({
 
 const ButtonBar = (props) => {
   const [anchorElement, setAnchorElement] = useState(null);
+  const auth = useRef();
   const isMenuOpen = Boolean(anchorElement);
   const classes = useStyles(props);
 
-  const handleLogin = () => {
-    props.userLogin();
+  // this callback will get isSignedIn as an argument from our auth object and will run
+  // whenever auth.isSignedIn changes because it is assigned as the event listener
+  // by the "listen" method below.
+  const handleAuthChange = (isSignedIn) => {
+    if (isSignedIn) {
+      props.userLogin(auth.current.currentUser.get().getId());
+    } else {
+      props.userLogout();
+    }
   };
 
-  const handleLogout = () => {
-    props.userLogout();
+  // initialize GAPI and set up event listeners to modify
+  // the redux store when user signs in or out
+  useEffect(() => {
+    window.gapi.load('client:auth2', () => {
+      // this callback will be called after Google API finishes loading the required library
+      window.gapi.client
+        .init({
+          clientId: CLIENT_ID,
+          scope: 'email',
+        })
+        .then(() => {
+          // After everything is ready, connect the auth instance to this component
+          auth.current = window.gapi.auth2.getAuthInstance();
+          // Immediately update the auth state in redux store
+          handleAuthChange(auth.current.isSignedIn.get());
+          // Set an event listener to handle the situation whenever auth.isSignedIn changes
+          auth.current.isSignedIn.listen(handleAuthChange);
+        });
+    });
+  }, []);
+
+  const handleSignInClick = () => {
+    auth.current.signIn();
+  };
+
+  const handleSignOutClick = () => {
+    auth.current.signOut();
   };
 
   const handleProfileMenuClose = () => {
@@ -128,7 +162,7 @@ const ButtonBar = (props) => {
           <Box className={classes.box} />
           <div className={classes.sectionDesktop}>
             <Button
-              onClick={handleLogin}
+              onClick={handleSignInClick}
               className={clsx(classes.button, classes.loginButtons)}
             >
               LOGIN
@@ -137,7 +171,7 @@ const ButtonBar = (props) => {
               SIGNUP
             </Button>
             <Button
-              onClick={handleLogout}
+              onClick={handleSignOutClick}
               className={clsx(classes.button, classes.profileButtons)}
             >
               LOGOUT

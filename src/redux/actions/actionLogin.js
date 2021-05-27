@@ -1,13 +1,12 @@
-import { LOGIN } from './types';
+import { LOGIN, LOGOUT } from './types';
 
-const userLogin = () => ({
+const userLogin = (userId) => ({
   type: LOGIN,
-  payload: true,
+  payload: userId,
 });
 
 const userLogout = () => ({
-  type: LOGIN,
-  payload: false,
+  type: LOGOUT,
 });
 
 export default { userLogin, userLogout };

@@ -140,6 +140,7 @@ const removeRecipe = (id) => ({
   payload: id,
 });
 
+// memoize fetching data from API logic to prevent duplicate API calls
 const getRecipeByName = _.memoize(async (searchTerm) => {
   const response = await tmdb.get('/search.php', {
     params: {

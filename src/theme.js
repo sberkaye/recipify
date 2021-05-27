@@ -1,5 +1,6 @@
 import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 
+// custom theme
 const theme = responsiveFontSizes(
   createMuiTheme({
     palette: {

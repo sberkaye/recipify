@@ -11,6 +11,7 @@ import {
   TableRow,
   Paper,
 } from '@material-ui/core';
+import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 
 const useStyles = makeStyles((theme) => ({
@@ -52,7 +53,7 @@ const IngredientsTable = (props) => {
         </TableHead>
         <TableBody>
           {rows.map((row) => (
-            <TableRow key={row.ingredient}>
+            <TableRow key={uuidv4()}>
               <TableCell component="th" scope="row">
                 {row.ingredient}
               </TableCell>

@@ -15,9 +15,12 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(4),
     // increase padding in smaller screens to have space between buttons and title
     [theme.breakpoints.down('sm')]: {
-      padding: theme.spacing(0),
+      padding: theme.spacing(6),
       maxWidth: '100%',
       backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${headerSmall})`,
+    },
+    [theme.breakpoints.down('xs')]: {
+      padding: theme.spacing(7),
     },
   },
 }));

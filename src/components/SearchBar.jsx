@@ -12,7 +12,9 @@ import {
   ListItemText,
   ListItemSecondaryAction,
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import clsx from 'clsx';
+import { v4 as uuidv4 } from 'uuid';
+import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Tag from './Tag';
@@ -59,6 +61,14 @@ const useRootStyles = makeStyles((theme) => ({
     },
     background: '#fff',
   },
+  listItem: {
+    '&:hover': {
+      background: '#eee',
+    },
+  },
+  activeListItem: {
+    background: '#eee',
+  },
   secondaryActions: {
     [theme.breakpoints.down('sm')]: {
       display: 'none',
@@ -73,15 +83,33 @@ const useRootStyles = makeStyles((theme) => ({
 const SearchBar = (props) => {
   const [term, setTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState(term);
+  const [cursorPosition, setCursorPosition] = useState(0);
   const classes = useInputStyles();
   const rootClasses = useRootStyles();
   const { results } = props;
+  const history = useHistory();
 
-  // const handleArrowKeyPress = (event) => {
-  //   switch (event.keyCode) {
-  //     case
-  //   }
-  // };
+  // key codes
+  const ARROW_UP = 38;
+  const ARROW_DOWN = 40;
+  const ENTER = 13;
+
+  const handleArrowKeyPress = (event) => {
+    if (
+      event.keyCode === ARROW_DOWN &&
+      cursorPosition < (results.length > 5 ? 5 : results.length)
+    ) {
+      event.preventDefault();
+      setCursorPosition((pos) => pos + 1);
+    } else if (event.keyCode === ARROW_UP && cursorPosition > 0) {
+      event.preventDefault();
+      setCursorPosition((pos) => pos - 1);
+    } else if (event.keyCode === ENTER && cursorPosition !== 0) {
+      setTerm('');
+      setCursorPosition(0);
+      history.push(`/recipe/${results[cursorPosition - 1].id}`);
+    }
+  };
 
   useEffect(() => {
     const timerId = setTimeout(() => {
@@ -104,10 +132,15 @@ const SearchBar = (props) => {
             className={rootClasses.link}
             to={`/recipe/${id}`}
             onClick={() => setTerm('')}
+            key={uuidv4()}
           >
             <ListItem
               button
-              key={id}
+              className={clsx(
+                rootClasses.listItem,
+                cursorPosition - 1 === resultsIndex &&
+                  rootClasses.activeListItem,
+              )}
               divider={
                 results.length < 5
                   ? !(resultsIndex === results.length - 1)
@@ -120,7 +153,7 @@ const SearchBar = (props) => {
                   tags.map(
                     (tag, index) =>
                       index < 3 && (
-                        <Tag sm type="tag">
+                        <Tag key={uuidv4()} sm type="tag">
                           {tag}
                         </Tag>
                       ),
@@ -137,9 +170,8 @@ const SearchBar = (props) => {
         className={rootClasses.root}
         variant="outlined"
         autoFocus
-        onChange={(e) => {
-          setTerm(e.target.value);
-        }}
+        onChange={(e) => setTerm(e.target.value)}
+        onKeyDown={handleArrowKeyPress}
         value={term}
         placeholder="Search for a recipe"
         InputProps={{
@@ -163,7 +195,8 @@ const SearchBar = (props) => {
 
 SearchBar.propTypes = {
   fetchRecipesByName: PropTypes.func.isRequired,
-  results: PropTypes.arrayOf(PropTypes.shape({})).isRequired,
+  results: PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.string }))
+    .isRequired,
 };
 
 const mapStateToProps = (state) => ({

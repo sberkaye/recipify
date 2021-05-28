@@ -17,6 +17,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import CLIENT_ID from '../credentials';
+import SignupModal from './SignupModal';
 import loginActions from '../redux/actions/actionLogin';
 
 const { userLogin, userLogout } = loginActions;
@@ -83,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ButtonBar = (props) => {
   const [anchorElement, setAnchorElement] = useState(null);
+  const [showSignup, setShowSignup] = useState(false);
   const auth = useRef();
   const isMenuOpen = Boolean(anchorElement);
   const classes = useStyles(props);
@@ -134,6 +136,7 @@ const ButtonBar = (props) => {
   const handleProfileMenuOpen = (e) => {
     setAnchorElement(e.currentTarget);
   };
+
   const renderProfileMenu = (
     <Menu
       anchorEl={anchorElement}
@@ -148,6 +151,10 @@ const ButtonBar = (props) => {
       <Divider className={classes.divider} />
       <MenuItem className={classes.profileMenuItem}>Login</MenuItem>
     </Menu>
+  );
+
+  const renderSignupForm = (
+    <SignupModal open={showSignup} handleOpen={setShowSignup} />
   );
 
   return (
@@ -167,7 +174,12 @@ const ButtonBar = (props) => {
             >
               LOGIN
             </Button>
-            <Button className={clsx(classes.button, classes.loginButtons)}>
+            <Button
+              onClick={() => {
+                setShowSignup(true);
+              }}
+              className={clsx(classes.button, classes.loginButtons)}
+            >
               SIGNUP
             </Button>
             <Button
@@ -188,6 +200,7 @@ const ButtonBar = (props) => {
         </Toolbar>
       </AppBar>
       {renderProfileMenu}
+      {renderSignupForm}
     </>
   );
 };

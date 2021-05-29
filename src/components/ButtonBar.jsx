@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+/* eslint-disable object-curly-newline */
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import {
   AppBar,
   makeStyles,
@@ -9,6 +10,8 @@ import {
   Menu,
   MenuItem,
   Divider,
+  Slide,
+  Snackbar,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
@@ -82,9 +85,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const Transition = forwardRef((props, ref) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <Slide direction="up" ref={ref} {...props} />
+));
+
 const ButtonBar = (props) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
+  const [showSnackbar, setShowSnackbar] = useState(false);
   const auth = useRef();
   const isMenuOpen = Boolean(anchorElement);
   const classes = useStyles(props);
@@ -137,6 +146,18 @@ const ButtonBar = (props) => {
     setAnchorElement(e.currentTarget);
   };
 
+  const renderSnackbar = (
+    <Snackbar
+      open={showSnackbar}
+      onClose={() => {
+        setShowSnackbar(false);
+      }}
+      autoHideDuration={1000}
+      TransitionComponent={Transition}
+      message="Verification e-mail sent"
+    />
+  );
+
   const renderProfileMenu = (
     <Menu
       anchorEl={anchorElement}
@@ -147,14 +168,34 @@ const ButtonBar = (props) => {
       keepMounted
       onClose={handleProfileMenuClose}
     >
-      <MenuItem className={classes.profileMenuItem}>Signup</MenuItem>
+      <MenuItem
+        onClick={() => {
+          setAnchorElement(null);
+          setShowSignup(true);
+        }}
+        className={classes.profileMenuItem}
+      >
+        Signup
+      </MenuItem>
       <Divider className={classes.divider} />
-      <MenuItem className={classes.profileMenuItem}>Login</MenuItem>
+      <MenuItem
+        onClick={() => {
+          setAnchorElement(null);
+          handleSignInClick();
+        }}
+        className={classes.profileMenuItem}
+      >
+        Login
+      </MenuItem>
     </Menu>
   );
 
   const renderSignupForm = (
-    <SignupModal open={showSignup} handleOpen={setShowSignup} />
+    <SignupModal
+      open={showSignup}
+      handleOpen={setShowSignup}
+      showSnackbar={setShowSnackbar}
+    />
   );
 
   return (
@@ -201,6 +242,7 @@ const ButtonBar = (props) => {
       </AppBar>
       {renderProfileMenu}
       {renderSignupForm}
+      {renderSnackbar}
     </>
   );
 };

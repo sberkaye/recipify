@@ -5,7 +5,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
-  TextField,
   InputAdornment,
   List,
   ListItem,
@@ -18,30 +17,16 @@ import { Link, useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import Tag from './Tag';
-
+import CustomTextField from './CustomTextField';
 import recipeActions from '../redux/actions/actionRecipe';
 
 const { fetchRecipesByName } = recipeActions;
 
-const useInputStyles = makeStyles({
-  root: {
-    background: '#fff',
-    border: 'none',
-    boxShadow: '0 1px 2px #ccc',
-    // when hovered
-    '&:hover': {
-      background: '#fff',
-    },
-  },
-  focused: {},
-  notchedOutline: {
-    border: 'none',
-  },
-});
-
 const useRootStyles = makeStyles((theme) => ({
   root: {
     zIndex: 99,
+    // boxShadow: '0 1px 1px #aaa',
+    border: 'none',
     left: '50%',
     width: '80%',
     [theme.breakpoints.down('sm')]: {
@@ -49,6 +34,9 @@ const useRootStyles = makeStyles((theme) => ({
     },
     transform: 'translate(-50%,-50%)',
     position: 'absolute',
+  },
+  searchIcon: {
+    color: '#555',
   },
   list: {
     zIndex: 100,
@@ -84,7 +72,6 @@ const SearchBar = (props) => {
   const [term, setTerm] = useState('');
   const [debouncedTerm, setDebouncedTerm] = useState(term);
   const [cursorPosition, setCursorPosition] = useState(0);
-  const classes = useInputStyles();
   const rootClasses = useRootStyles();
   const { results } = props;
   const history = useHistory();
@@ -166,7 +153,7 @@ const SearchBar = (props) => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <TextField
+      <CustomTextField
         className={rootClasses.root}
         variant="outlined"
         autoFocus
@@ -177,10 +164,9 @@ const SearchBar = (props) => {
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon />
+              <SearchIcon className={rootClasses.searchIcon} />
             </InputAdornment>
           ),
-          classes,
         }}
       />
 

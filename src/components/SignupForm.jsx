@@ -6,7 +6,6 @@ import {
   FormLabel,
   Button,
   Grid,
-  FormControl,
   useTheme,
 } from '@material-ui/core';
 import CustomTextField from './CustomTextField';
@@ -15,17 +14,17 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     boxShadow: 'none',
     border: '1px solid #ccc',
-    marginLeft: theme.spacing(1),
+    width: '90%',
     marginRight: theme.spacing(1),
-    width: '60%',
+    marginBottom: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
-      width: '80%',
-      display: 'block',
+      width: '100%',
     },
   },
   form: {
     padding: theme.spacing(2),
     margin: theme.spacing(1),
+    marginTop: '0',
   },
   formControl: {
     display: 'flex',
@@ -44,6 +43,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '0.8rem',
     color: theme.palette.error.main,
     display: 'inline-block',
+    textAlign: 'right',
+    margin: theme.spacing(1),
   },
   submitButton: {
     color: '#fff',
@@ -112,12 +113,14 @@ const SignupForm = (props) => {
   return (
     <>
       <form onSubmit={formik.handleSubmit} className={classes.form}>
-        <Grid container direction="column">
-          <FormControl className={classes.formControl}>
-            <FormLabel className={classes.formLabel} htmlFor="firstName">
-              First Name:
-            </FormLabel>
-            <div className={classes.textControls}>
+        <Grid container>
+          <Grid item container direction="row" alignItems="center">
+            <Grid item xs={3} sm={2}>
+              <FormLabel className={classes.formLabel} htmlFor="firstName">
+                First Name:
+              </FormLabel>
+            </Grid>
+            <Grid item xs={8}>
               <CustomTextField
                 className={classes.textField}
                 id="firstName"
@@ -128,61 +131,75 @@ const SignupForm = (props) => {
                 onChange={formik.handleChange}
                 value={formik.values.firstName}
               />
+            </Grid>
+            <Grid xs={12} md={2}>
               {formik.touched.firstName && formik.errors.firstName ? (
                 <div className={classes.error}>{formik.errors.firstName}</div>
               ) : null}
-            </div>
-          </FormControl>
+            </Grid>
+          </Grid>
 
-          <FormControl className={classes.formControl}>
-            <FormLabel className={classes.formLabel} htmlFor="lastName">
-              Last Name:
-            </FormLabel>
-            <CustomTextField
-              className={classes.textField}
-              id="lastName"
-              name="lastName"
-              variant="outlined"
-              type="text"
-              onChange={formik.handleChange}
-              value={formik.values.lastName}
-            />
-            {formik.touched.lastName && formik.errors.lastName ? (
-              <div className={classes.error}>{formik.errors.lastName}</div>
-            ) : null}
-          </FormControl>
+          <Grid item container direction="row" alignItems="center">
+            <Grid item xs={3} sm={2}>
+              <FormLabel className={classes.formLabel} htmlFor="lastName">
+                Last Name:
+              </FormLabel>
+            </Grid>
+            <Grid item xs={8}>
+              <CustomTextField
+                className={classes.textField}
+                id="lastName"
+                name="lastName"
+                variant="outlined"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.lastName}
+              />
+            </Grid>
+            <Grid xs={12} md={2}>
+              {formik.touched.lastName && formik.errors.lastName ? (
+                <div className={classes.error}>{formik.errors.lastName}</div>
+              ) : null}
+            </Grid>
+          </Grid>
 
-          <FormControl className={classes.formControl}>
-            <FormLabel className={classes.formLabel} htmlFor="email">
-              Email:
-            </FormLabel>
-            <CustomTextField
-              className={classes.textField}
-              id="email"
-              name="email"
-              variant="outlined"
-              type="email"
-              onChange={formik.handleChange}
-              value={formik.values.email}
-            />
-            {formik.touched.email && formik.errors.email ? (
-              <div className={classes.error}>{formik.errors.email}</div>
-            ) : null}
-          </FormControl>
-          <div className={classes.buttonContainer}>
-            <Button className={classes.cancelButton} onClick={closeDialog}>
-              Cancel
-            </Button>
-            <Button
-              className={classes.submitButton}
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
-              Signup
-            </Button>
-          </div>
+          <Grid item container direction="row" alignItems="center">
+            <Grid item xs={3} sm={2}>
+              <FormLabel className={classes.formLabel} htmlFor="email">
+                Email:
+              </FormLabel>
+            </Grid>
+            <Grid item xs={8}>
+              <CustomTextField
+                className={classes.textField}
+                id="email"
+                name="email"
+                variant="outlined"
+                type="email"
+                onChange={formik.handleChange}
+                value={formik.values.email}
+              />
+            </Grid>
+            <Grid xs={12} md={2}>
+              {formik.touched.email && formik.errors.email ? (
+                <div className={classes.error}>{formik.errors.email}</div>
+              ) : null}
+            </Grid>
+          </Grid>
         </Grid>
+        <div className={classes.buttonContainer}>
+          <Button className={classes.cancelButton} onClick={closeDialog}>
+            Cancel
+          </Button>
+          <Button
+            className={classes.submitButton}
+            type="submit"
+            variant="contained"
+            color="primary"
+          >
+            Signup
+          </Button>
+        </div>
       </form>
     </>
   );

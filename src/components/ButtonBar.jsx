@@ -114,7 +114,7 @@ const ButtonBar = (props) => {
       // this callback will be called after Google API finishes loading the required library
       window.gapi.client
         .init({
-          clientId: process.env.GAPI_CLIENT_ID,
+          clientId: process.env.REACT_APP_GAPI_CLIENT_ID,
           scope: 'email',
         })
         .then(() => {

@@ -18,7 +18,6 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import CLIENT_ID from '../credentials';
 import SignupModal from './SignupModal';
 import recipifyIconMedium from '../assets/recipify_64x64.png';
 import recipifyIconSmall from '../assets/recipify_32x32.png';
@@ -115,7 +114,7 @@ const ButtonBar = (props) => {
       // this callback will be called after Google API finishes loading the required library
       window.gapi.client
         .init({
-          clientId: CLIENT_ID,
+          clientId: process.env.GAPI_CLIENT_ID,
           scope: 'email',
         })
         .then(() => {

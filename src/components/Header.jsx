@@ -8,8 +8,8 @@ import ButtonBar from './ButtonBar';
 
 const useStyles = makeStyles((theme) => ({
   headerContainer: {
-    backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${headerMedium})`,
-    backgroundPosition: 'top',
+    backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url(${headerMedium})`,
+    backgroundPosition: 'bottom',
     height: 250,
     maxWidth: '100%',
     padding: theme.spacing(4),
@@ -17,10 +17,16 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(6),
       maxWidth: '100%',
-      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(${headerSmall})`,
+      backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url(${headerSmall})`,
+      backgroundPosition: 'bottom',
     },
     [theme.breakpoints.down('xs')]: {
-      padding: theme.spacing(7),
+      paddingTop: theme.spacing(10),
+    },
+  },
+  headerTitle: {
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '2.8rem',
     },
   },
 }));
@@ -34,7 +40,11 @@ const Header = () => {
       </Grid>
       <Grid item container alignItems="center">
         <Container disableGutters className={classes.headerContainer}>
-          <Typography variant="h1" align="center">
+          <Typography
+            className={classes.headerTitle}
+            variant="h1"
+            align="center"
+          >
             Recipify
           </Typography>
         </Container>

@@ -14,13 +14,14 @@ import {
   Snackbar,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import HomeRoundedIcon from '@material-ui/icons/HomeRounded';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import CLIENT_ID from '../credentials';
 import SignupModal from './SignupModal';
+import recipifyIconMedium from '../assets/recipify_64x64.png';
+import recipifyIconSmall from '../assets/recipify_32x32.png';
 import loginActions from '../redux/actions/actionLogin';
 
 const { userLogin, userLogout } = loginActions;
@@ -68,9 +69,7 @@ const useStyles = makeStyles((theme) => ({
   accountButton: {
     transform: 'scale(1.9)',
   },
-  homeButton: {
-    transform: 'scale(1.7)',
-  },
+  homeButton: {},
   profileMenu: {
     marginTop: theme.spacing(4),
   },
@@ -204,7 +203,12 @@ const ButtonBar = (props) => {
         <Toolbar>
           <Link to="/">
             <IconButton>
-              <HomeRoundedIcon className={classes.homeButton} color="primary" />
+              <img
+                srcSet={`${recipifyIconSmall} 32w, ${recipifyIconMedium} 64w`}
+                sizes="(max-width: 675px) 32px, 64px"
+                src={recipifyIconMedium}
+                alt="Logo"
+              />
             </IconButton>
           </Link>
           <Box className={classes.box} />

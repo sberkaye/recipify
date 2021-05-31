@@ -19,6 +19,10 @@ const useStyles = makeStyles((theme) => ({
     height: '3.6rem',
     bottom: 0,
     width: '100%',
+    '& a': {
+      textDecoration: 'none',
+      color: '#ddd',
+    },
   },
   iconContainer: {
     display: 'flex',
@@ -47,6 +51,16 @@ const Footer = () => {
 
   return (
     <Box className={classes.footer}>
+      <div>
+        Fav icons made by&nbsp;
+        <a href="https://www.freepik.com" title="Freepik">
+          Freepik
+        </a>
+        &nbsp; from&nbsp;
+        <a href="https://www.flaticon.com/" title="Flaticon">
+          www.flaticon.com
+        </a>
+      </div>
       A Sample React project by Berkay Ergin
       <div className={classes.iconContainer}>
         <IconButton onClick={openGitHub} className={classes.iconButton}>

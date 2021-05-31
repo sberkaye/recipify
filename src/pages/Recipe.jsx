@@ -72,7 +72,7 @@ const Recipe = (props) => {
       duration: 800,
       smooth: true,
     });
-  });
+  }, []);
 
   useEffect(() => {
     switch (screenSize) {

@@ -1,21 +1,63 @@
 import React from 'react';
-import { makeStyles, Box } from '@material-ui/core';
+import { makeStyles, Box, IconButton } from '@material-ui/core';
+import GitHubIcon from '@material-ui/icons/GitHub';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
+
+const GH_LINK = 'https://github.com/sberkaye/recipify';
+const LI_LINK = 'https://www.linkedin.com/in/berkay-ergin-218436198/';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     background: '#333',
     color: '#ddd',
+    fontSize: '0.7rem',
+    lineHeight: 2,
     padding: theme.spacing(2),
     height: '3.6rem',
     bottom: 0,
     width: '100%',
   },
+  iconContainer: {
+    display: 'flex',
+  },
+  iconButton: {
+    '&:hover *': {
+      color: '#eee',
+    },
+  },
+  icon: {
+    color: '#ddd',
+    transition: 'all 0.2s',
+  },
 }));
+
+const openGitHub = () => {
+  window.open(GH_LINK, '_blank');
+};
+
+const openLinkedIn = () => {
+  window.open(LI_LINK, '_blank');
+};
 
 const Footer = () => {
   const classes = useStyles();
 
-  return <Box className={classes.footer}>Footer</Box>;
+  return (
+    <Box className={classes.footer}>
+      A Sample React project by Berkay Ergin
+      <div className={classes.iconContainer}>
+        <IconButton onClick={openGitHub} className={classes.iconButton}>
+          <GitHubIcon className={classes.icon} />
+        </IconButton>
+        <IconButton onClick={openLinkedIn} className={classes.iconButton}>
+          <LinkedInIcon className={classes.icon} />
+        </IconButton>
+      </div>
+    </Box>
+  );
 };
 
 export default Footer;

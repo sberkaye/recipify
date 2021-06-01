@@ -18,7 +18,8 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import SignupModal from './SignupModal';
+import SignupModal from './auth/modals/SignupModal';
+import LoginModal from './auth/modals/LoginModal';
 import recipifyIconMedium from '../assets/recipify_64x64.png';
 import recipifyIconSmall from '../assets/recipify_32x32.png';
 import loginActions from '../redux/actions/actionLogin';
@@ -91,7 +92,9 @@ const Transition = forwardRef((props, ref) => (
 const ButtonBar = (props) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignupSnackbar, setShowSignupSnackbar] = useState(false);
+  const [showLoginSnackbar, setShowLoginSnackbar] = useState(false);
   // const auth = useRef();
   const isMenuOpen = Boolean(anchorElement);
   const classes = useStyles(props);
@@ -130,10 +133,6 @@ const ButtonBar = (props) => {
   }, []);
   */
 
-  const handleSignInClick = () => {
-    // auth.current.signIn();
-  };
-
   const handleSignOutClick = () => {
     // auth.current.signOut();
   };
@@ -146,15 +145,27 @@ const ButtonBar = (props) => {
     setAnchorElement(e.currentTarget);
   };
 
-  const renderSnackbar = (
+  const renderSignupSnackbar = (
     <Snackbar
-      open={showSnackbar}
+      open={showSignupSnackbar}
       onClose={() => {
-        setShowSnackbar(false);
+        setShowSignupSnackbar(false);
       }}
       autoHideDuration={1000}
       TransitionComponent={Transition}
       message="Verification e-mail sent"
+    />
+  );
+
+  const renderLoginSnackbar = (
+    <Snackbar
+      open={showLoginSnackbar}
+      onClose={() => {
+        setShowLoginSnackbar(false);
+      }}
+      autoHideDuration={1000}
+      TransitionComponent={Transition}
+      message="Login successful!"
     />
   );
 
@@ -181,7 +192,7 @@ const ButtonBar = (props) => {
       <MenuItem
         onClick={() => {
           setAnchorElement(null);
-          handleSignInClick();
+          setShowLogin(true);
         }}
         className={classes.profileMenuItem}
       >
@@ -194,7 +205,15 @@ const ButtonBar = (props) => {
     <SignupModal
       open={showSignup}
       handleOpen={setShowSignup}
-      showSnackbar={setShowSnackbar}
+      showSnackbar={setShowSignupSnackbar}
+    />
+  );
+
+  const renderLoginForm = (
+    <LoginModal
+      open={showLogin}
+      handleOpen={setShowLogin}
+      showSnackbar={setShowLoginSnackbar}
     />
   );
 
@@ -215,7 +234,9 @@ const ButtonBar = (props) => {
           <Box className={classes.box} />
           <div className={classes.sectionDesktop}>
             <Button
-              onClick={handleSignInClick}
+              onClick={() => {
+                setShowLogin(true);
+              }}
               className={clsx(classes.button, classes.loginButtons)}
             >
               LOGIN
@@ -247,7 +268,9 @@ const ButtonBar = (props) => {
       </AppBar>
       {renderProfileMenu}
       {renderSignupForm}
-      {renderSnackbar}
+      {renderLoginForm}
+      {renderSignupSnackbar}
+      {renderLoginSnackbar}
     </>
   );
 };

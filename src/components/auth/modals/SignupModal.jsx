@@ -4,54 +4,17 @@ import PropTypes from 'prop-types';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import Slide from '@material-ui/core/Slide';
-import IconButton from '@material-ui/core/IconButton';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import { useTheme, withStyles } from '@material-ui/core/styles';
-import MuiDialogTitle from '@material-ui/core/DialogTitle';
+import { useTheme } from '@material-ui/core/styles';
 import DialogContent from '@material-ui/core/DialogContent';
-import CloseIcon from '@material-ui/icons/Close';
-import Typography from '@material-ui/core/Typography';
-import SignupForm from './SignupForm';
+import SignupForm from '../forms/SignupForm';
+import CustomizedDialogTitle from './CustomizedDialogTitle';
 
 // Transition component to animate the entrance of the dialog
 const Transition = forwardRef((props, ref) => (
   // eslint-disable-next-line react/jsx-props-no-spreading
   <Slide direction="up" ref={ref} {...props} />
 ));
-
-// custom styles for CustomizedDialogTitle
-const styles = (theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(2),
-  },
-  closeButton: {
-    position: 'absolute',
-    right: theme.spacing(1),
-    top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  },
-});
-
-// a different implementation of DialogTitle to contain a close button
-const CustomizedDialogTitle = withStyles(styles)((props) => {
-  // eslint-disable-next-line object-curly-newline
-  const { children, classes, onClose, ...other } = props;
-  return (
-    <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
-      {onClose ? (
-        <IconButton
-          aria-label="close"
-          className={classes.closeButton}
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
-      ) : null}
-    </MuiDialogTitle>
-  );
-});
 
 const SignupModal = (props) => {
   const { open, handleOpen, showSnackbar } = props;

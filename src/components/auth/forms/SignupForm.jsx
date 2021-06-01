@@ -8,7 +8,7 @@ import {
   Grid,
   useTheme,
 } from '@material-ui/core';
-import CustomTextField from './CustomTextField';
+import CustomTextField from '../../CustomTextField';
 
 const useStyles = makeStyles((theme) => ({
   textField: {
@@ -84,10 +84,22 @@ const validate = (values) => {
     errors.lastName = 'Must be 20 characters or less';
   }
 
+  if (!values.userName) {
+    errors.userName = 'This field is required.';
+  } else if (values.userName.length > 20) {
+    errors.userName = 'Must be 20 characters or less';
+  }
+
   if (!values.email) {
     errors.email = 'This field is required.';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
     errors.email = 'Invalid email address';
+  }
+
+  if (!values.password) {
+    errors.password = 'This field is required.';
+  } else if (values.password.length > 20) {
+    errors.password = 'Must be 20 characters or less';
   }
 
   return errors;
@@ -101,7 +113,9 @@ const SignupForm = (props) => {
     initialValues: {
       firstName: '',
       lastName: '',
+      userName: '',
       email: '',
+      password: '', // normally this should be encrypted
     },
     validate,
     onSubmit: () => {
@@ -165,6 +179,30 @@ const SignupForm = (props) => {
 
           <Grid item container direction="row" alignItems="center">
             <Grid item xs={3} sm={2}>
+              <FormLabel className={classes.formLabel} htmlFor="userName">
+                Username:
+              </FormLabel>
+            </Grid>
+            <Grid item xs={8}>
+              <CustomTextField
+                className={classes.textField}
+                id="userName"
+                name="userName"
+                variant="outlined"
+                type="text"
+                onChange={formik.handleChange}
+                value={formik.values.userName}
+              />
+            </Grid>
+            <Grid xs={12} md={2}>
+              {formik.touched.userName && formik.errors.userName ? (
+                <div className={classes.error}>{formik.errors.userName}</div>
+              ) : null}
+            </Grid>
+          </Grid>
+
+          <Grid item container direction="row" alignItems="center">
+            <Grid item xs={3} sm={2}>
               <FormLabel className={classes.formLabel} htmlFor="email">
                 Email:
               </FormLabel>
@@ -186,7 +224,32 @@ const SignupForm = (props) => {
               ) : null}
             </Grid>
           </Grid>
+
+          <Grid item container direction="row" alignItems="center">
+            <Grid item xs={3} sm={2}>
+              <FormLabel className={classes.formLabel} htmlFor="password">
+                Password:
+              </FormLabel>
+            </Grid>
+            <Grid item xs={8}>
+              <CustomTextField
+                className={classes.textField}
+                id="password"
+                name="password"
+                variant="outlined"
+                type="password"
+                onChange={formik.handleChange}
+                value={formik.values.password}
+              />
+            </Grid>
+            <Grid xs={12} md={2}>
+              {formik.touched.password && formik.errors.password ? (
+                <div className={classes.error}>{formik.errors.password}</div>
+              ) : null}
+            </Grid>
+          </Grid>
         </Grid>
+
         <div className={classes.buttonContainer}>
           <Button className={classes.cancelButton} onClick={closeDialog}>
             Cancel

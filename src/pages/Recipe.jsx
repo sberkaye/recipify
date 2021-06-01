@@ -68,11 +68,14 @@ const Recipe = (props) => {
       await fetchRecipeById(id);
     };
     getData();
+  }, []);
+
+  useEffect(() => {
     scroller.scrollTo('title', {
       duration: 800,
       smooth: true,
     });
-  }, []);
+  });
 
   useEffect(() => {
     switch (screenSize) {

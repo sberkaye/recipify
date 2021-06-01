@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'none',
     border: '1px solid #ccc',
     width: '90%',
-    marginLeft: theme.spacing(1),
+    marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(1),
   },
   form: {

@@ -15,11 +15,8 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: 'none',
     border: '1px solid #ccc',
     width: '90%',
-    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(2),
     marginBottom: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
   },
   form: {
     padding: theme.spacing(2),
@@ -36,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
     width: '12%',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      width: '20%',
+      width: '25%',
     },
   },
   error: {

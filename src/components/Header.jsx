@@ -17,11 +17,14 @@ const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: theme.spacing(6),
       maxWidth: '100%',
+      letterSpacing: '0px',
       backgroundImage: `linear-gradient(to right, rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)), url(${headerSmall})`,
       backgroundPosition: 'bottom',
     },
     [theme.breakpoints.down('xs')]: {
       paddingTop: theme.spacing(10),
+      letterSpacing: '0rem',
+      maxWidth: '100%',
     },
   },
   headerTitle: {

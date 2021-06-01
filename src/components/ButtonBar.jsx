@@ -1,5 +1,5 @@
 /* eslint-disable object-curly-newline */
-import React, { useState, useEffect, useRef, forwardRef } from 'react';
+import React, { useState, /* useEffect, useRef, */ forwardRef } from 'react';
 import {
   AppBar,
   makeStyles,
@@ -16,7 +16,7 @@ import {
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import SignupModal from './SignupModal';
 import recipifyIconMedium from '../assets/recipify_64x64.png';
@@ -92,23 +92,24 @@ const ButtonBar = (props) => {
   const [anchorElement, setAnchorElement] = useState(null);
   const [showSignup, setShowSignup] = useState(false);
   const [showSnackbar, setShowSnackbar] = useState(false);
-  const auth = useRef();
+  // const auth = useRef();
   const isMenuOpen = Boolean(anchorElement);
   const classes = useStyles(props);
 
   // this callback will get isSignedIn as an argument from our auth object and will run
   // whenever auth.isSignedIn changes because it is assigned as the event listener
   // by the "listen" method below.
-  const handleAuthChange = (isSignedIn) => {
-    if (isSignedIn) {
-      props.userLogin(auth.current.currentUser.get().getId());
-    } else {
-      props.userLogout();
-    }
-  };
+  // const handleAuthChange = (isSignedIn) => {
+  //   if (isSignedIn) {
+  //     props.userLogin(auth.current.currentUser.get().getId());
+  //   } else {
+  //     props.userLogout();
+  //   }
+  // };
 
   // initialize GAPI and set up event listeners to modify
   // the redux store when user signs in or out
+  /*
   useEffect(() => {
     window.gapi.load('client:auth2', () => {
       // this callback will be called after Google API finishes loading the required library
@@ -127,13 +128,14 @@ const ButtonBar = (props) => {
         });
     });
   }, []);
+  */
 
   const handleSignInClick = () => {
-    auth.current.signIn();
+    // auth.current.signIn();
   };
 
   const handleSignOutClick = () => {
-    auth.current.signOut();
+    // auth.current.signOut();
   };
 
   const handleProfileMenuClose = () => {
@@ -251,8 +253,8 @@ const ButtonBar = (props) => {
 };
 
 ButtonBar.propTypes = {
-  userLogin: PropTypes.func.isRequired,
-  userLogout: PropTypes.func.isRequired,
+  // userLogin: PropTypes.func.isRequired,
+  // userLogout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

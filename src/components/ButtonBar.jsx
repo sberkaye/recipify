@@ -14,6 +14,7 @@ import {
   Snackbar,
 } from '@material-ui/core';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 // import PropTypes from 'prop-types';
@@ -79,9 +80,16 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: '#ddd',
     },
   },
-  divider: {
+  profileMenuLoginItem: (props) => ({
+    display: props.loggedIn ? 'none' : 'flex',
+  }),
+  profileMenuLogoutItem: (props) => ({
+    display: props.loggedIn ? 'flex' : 'none',
+  }),
+  divider: (props) => ({
+    display: props.loggedIn ? 'none' : 'flex',
     border: '1px solid #aaa',
-  },
+  }),
 }));
 
 const Transition = forwardRef((props, ref) => (
@@ -184,7 +192,7 @@ const ButtonBar = (props) => {
           setAnchorElement(null);
           setShowSignup(true);
         }}
-        className={classes.profileMenuItem}
+        className={clsx(classes.profileMenuItem, classes.profileMenuLoginItem)}
       >
         Signup
       </MenuItem>
@@ -194,9 +202,18 @@ const ButtonBar = (props) => {
           setAnchorElement(null);
           setShowLogin(true);
         }}
-        className={classes.profileMenuItem}
+        className={clsx(classes.profileMenuItem, classes.profileMenuLoginItem)}
       >
         Login
+      </MenuItem>
+      <MenuItem
+        onClick={() => {
+          setAnchorElement(null);
+          props.userLogout();
+        }}
+        className={clsx(classes.profileMenuItem, classes.profileMenuLogoutItem)}
+      >
+        Logout
       </MenuItem>
     </Menu>
   );
@@ -277,7 +294,7 @@ const ButtonBar = (props) => {
 
 ButtonBar.propTypes = {
   // userLogin: PropTypes.func.isRequired,
-  // userLogout: PropTypes.func.isRequired,
+  userLogout: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({

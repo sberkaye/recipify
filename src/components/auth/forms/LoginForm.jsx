@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     width: '12%',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      width: '20%',
+      width: '25%',
     },
   },
   error: {

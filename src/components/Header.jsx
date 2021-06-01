@@ -23,13 +23,14 @@ const useStyles = makeStyles((theme) => ({
     },
     [theme.breakpoints.down('xs')]: {
       paddingTop: theme.spacing(10),
-      letterSpacing: '0rem',
+
       maxWidth: '100%',
     },
   },
   headerTitle: {
     [theme.breakpoints.down('sm')]: {
       fontSize: '2.8rem',
+      letterSpacing: '0.8rem',
     },
   },
 }));

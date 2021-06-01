@@ -8,26 +8,22 @@ const LI_LINK = 'https://www.linkedin.com/in/berkay-ergin-218436198/';
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    display: 'flex',
-    flexDirection: 'row',
     alignItems: 'baseline',
     justifyContent: 'space-between',
     background: '#333',
     color: '#ddd',
     fontSize: '0.7rem',
-    lineHeight: 2,
     paddingTop: theme.spacing(1),
-    paddingLeft: theme.spacing(2),
+    lineHeight: 2,
     bottom: 0,
-    width: '100%',
+    minWidth: '100%',
     '& a': {
       textDecoration: 'none',
       color: '#ddd',
     },
-    [theme.breakpoints.down('xs')]: {},
   },
   iconContainer: {
-    padding: 0,
+    justifySelf: 'flex-end',
   },
   iconButton: {
     '&:hover *': {
@@ -52,8 +48,14 @@ const Footer = () => {
   const classes = useStyles();
 
   return (
-    <Grid container direction="row" p={0} className={classes.footer}>
-      <Grid item xs={12} sm={4}>
+    <Grid
+      container
+      xs={12}
+      direction="row"
+      justify="space-between"
+      className={classes.footer}
+    >
+      <Grid item align="center" xs={12} sm={4}>
         Fav icons made by&nbsp;
         <a href="https://www.freepik.com" title="Freepik">
           Freepik
@@ -63,10 +65,10 @@ const Footer = () => {
           www.flaticon.com
         </a>
       </Grid>
-      <Grid item xs={6} sm={6}>
+      <Grid item align="center" xs={6} sm={6}>
         A Sample React project by Berkay Ergin
       </Grid>
-      <Grid className={classes.iconContainer} item xs={6} sm={2}>
+      <Grid className={classes.iconContainer} item align="right" xs={6} sm={2}>
         <IconButton onClick={openGitHub} className={classes.iconButton}>
           <GitHubIcon className={classes.icon} />
         </IconButton>

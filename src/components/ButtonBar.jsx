@@ -17,7 +17,6 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-// import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import SignupModal from './auth/modals/SignupModal';
 import LoginModal from './auth/modals/LoginModal';
@@ -143,6 +142,7 @@ const ButtonBar = (props) => {
 
   const handleSignOutClick = () => {
     // auth.current.signOut();
+    props.userLogout();
   };
 
   const handleProfileMenuClose = () => {
@@ -293,7 +293,6 @@ const ButtonBar = (props) => {
 };
 
 ButtonBar.propTypes = {
-  // userLogin: PropTypes.func.isRequired,
   userLogout: PropTypes.func.isRequired,
 };
 

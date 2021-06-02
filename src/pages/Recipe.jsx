@@ -3,13 +3,12 @@
 /* eslint-disable operator-linebreak */
 /* eslint-disable react/prop-types */
 /* eslint-disable object-curly-newline */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Grid, Typography, makeStyles } from '@material-ui/core';
 import Image from 'material-ui-image';
 import { connect } from 'react-redux';
 import DOMPurify from 'dompurify';
 import PropTypes from 'prop-types';
-import { Element, scroller } from 'react-scroll';
 import Tag from '../components/Tag';
 import IngredientsTable from '../components/IngredientsTable';
 import recipeActions from '../redux/actions/actionRecipe';
@@ -45,6 +44,7 @@ const Recipe = (props) => {
   const classes = useStyles();
   const [tableRef, setTableRef] = useState();
   const [screenSize, calculateSize] = useScreenSize();
+  const scrollRef = useRef(null);
   const [imageAspectRatio, setImageAspectRatio] = useState(1 / 1);
   // eslint-disable-next-line no-shadow
   const { currentRecipe, fetchRecipeById, match } = props;
@@ -66,16 +66,10 @@ const Recipe = (props) => {
   useEffect(() => {
     const getData = async () => {
       await fetchRecipeById(id);
+      scrollRef.current.scrollIntoView();
     };
     getData();
   }, []);
-
-  useEffect(() => {
-    scroller.scrollTo('title', {
-      duration: 800,
-      smooth: true,
-    });
-  });
 
   useEffect(() => {
     switch (screenSize) {
@@ -144,6 +138,7 @@ const Recipe = (props) => {
     <>
       <Grid
         container
+        id="container"
         align="center"
         justify="space-around"
         item
@@ -152,11 +147,9 @@ const Recipe = (props) => {
       >
         {/* ----------------------------------------------------------------------- */}
         <Grid item xs={12}>
-          <Element name="title">
-            <Typography variant="h3" className={classes.title}>
-              {name}
-            </Typography>
-          </Element>
+          <Typography ref={scrollRef} variant="h3" className={classes.title}>
+            {name}
+          </Typography>
         </Grid>
         {/* ----------------------------------------------------------------------- */}
         <Grid item xs={12}>

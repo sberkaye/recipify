@@ -1,5 +1,7 @@
 # Recipify - Website to find food recipes easily
 
+Live demo [here](https://reactrecipify.netlify.app/).
+
 This is one of my portfolio projects to demonstrate my abilities in JS, React and web development in general.
 
 You can search any recipe available in [themealdb.com](https://www.themealdb.com/api.php) by their names. The site is completely responsive. 

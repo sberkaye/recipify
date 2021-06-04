@@ -143,7 +143,7 @@ const SignupForm = (props) => {
                 value={formik.values.firstName}
               />
             </Grid>
-            <Grid xs={12} md={2}>
+            <Grid item xs={12} md={2}>
               {formik.touched.firstName && formik.errors.firstName ? (
                 <div className={classes.error}>{formik.errors.firstName}</div>
               ) : null}
@@ -167,7 +167,7 @@ const SignupForm = (props) => {
                 value={formik.values.lastName}
               />
             </Grid>
-            <Grid xs={12} md={2}>
+            <Grid item xs={12} md={2}>
               {formik.touched.lastName && formik.errors.lastName ? (
                 <div className={classes.error}>{formik.errors.lastName}</div>
               ) : null}
@@ -191,7 +191,7 @@ const SignupForm = (props) => {
                 value={formik.values.userName}
               />
             </Grid>
-            <Grid xs={12} md={2}>
+            <Grid item xs={12} md={2}>
               {formik.touched.userName && formik.errors.userName ? (
                 <div className={classes.error}>{formik.errors.userName}</div>
               ) : null}
@@ -215,7 +215,7 @@ const SignupForm = (props) => {
                 value={formik.values.email}
               />
             </Grid>
-            <Grid xs={12} md={2}>
+            <Grid item xs={12} md={2}>
               {formik.touched.email && formik.errors.email ? (
                 <div className={classes.error}>{formik.errors.email}</div>
               ) : null}
@@ -239,7 +239,7 @@ const SignupForm = (props) => {
                 value={formik.values.password}
               />
             </Grid>
-            <Grid xs={12} md={2}>
+            <Grid item xs={12} md={2}>
               {formik.touched.password && formik.errors.password ? (
                 <div className={classes.error}>{formik.errors.password}</div>
               ) : null}

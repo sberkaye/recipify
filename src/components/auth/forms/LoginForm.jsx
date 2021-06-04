@@ -123,7 +123,7 @@ const LoginForm = (props) => {
                 value={formik.values.userName}
               />
             </Grid>
-            <Grid xs={12} md={2}>
+            <Grid item xs={12} md={2}>
               {formik.touched.userName && formik.errors.userName ? (
                 <div className={classes.error}>{formik.errors.userName}</div>
               ) : null}
@@ -147,7 +147,7 @@ const LoginForm = (props) => {
                 value={formik.values.password}
               />
             </Grid>
-            <Grid xs={12} md={2}>
+            <Grid item xs={12} md={2}>
               {formik.touched.password && formik.errors.password ? (
                 <div className={classes.error}>{formik.errors.password}</div>
               ) : null}

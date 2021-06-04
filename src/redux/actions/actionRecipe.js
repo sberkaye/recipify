@@ -208,6 +208,7 @@ const fetchRecipesByName = (searchTerm) => async (dispatch) => {
 export default {
   fetchRecipeById,
   getRandomRecipes,
+  getRandomRecipe,
   fetchRecipesByName,
   removeRecipe,
 };

@@ -69,7 +69,7 @@ const Recipe = (props) => {
       scrollRef.current.scrollIntoView();
     };
     getData();
-  }, []);
+  });
 
   useEffect(() => {
     switch (screenSize) {
